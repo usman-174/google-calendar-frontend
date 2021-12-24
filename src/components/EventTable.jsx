@@ -22,12 +22,28 @@ const EventTable = ({ events }) => {
   const { mutate } = useSWRConfig();
 
   const deleteEvent = async (id) => {
-    const { data } = await axios.delete(
-      "/events/delete/" + id
-    );
-    if (data?.message) {
-      alert("Event Deleted");
-      mutate("/events/all");
+    try {
+      
+      const { data } = await axios.delete(
+        "/events/delete/" + id
+      );
+      if (data?.success) {
+        toast({
+          title: "Event Deleted",
+          status: "success",
+          duration: 1500,
+          isClosable: true,
+        });
+         mutate("/events/all");
+         return
+      }
+    } catch (error) {
+      toast({
+        title: error?.response?.data?.error || "Failed to delete the Event",
+        status: "error",
+        duration: 1600,
+        isClosable: true,
+      });
     }
   };
 

@@ -13,7 +13,7 @@ const DeleteAlert = ({isOpen,cancelRef,onClose,templateId}) => {
         try {
             
             const {data} = await axios.delete(`/templates/delete/${templateId}`)
-            if(data?.message){
+            if(data?.success){
                 toast({
                     title:  "Template Deleted",
                     status: "success",
@@ -26,11 +26,12 @@ const DeleteAlert = ({isOpen,cancelRef,onClose,templateId}) => {
             }
         } catch (error) {
             toast({
-                title: error.message || "Failed to delete the template",
+                title: error?.response?.data?.error || "Failed to delete the template",
                 status: "error",
                 duration: 1600,
                 isClosable: true,
               });
+              return
         } 
     }
     return (

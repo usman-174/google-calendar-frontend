@@ -27,7 +27,7 @@ const Home = () => {
   const [filter, setFilter] = useState("");
   const toast = useToast();
 
-  const { isValidating, data, nextToken,mutate } = useGetEvent(
+  const { isValidating, data,error, nextToken,mutate } = useGetEvent(
     startDate,
     endDate,
     filter
@@ -47,11 +47,11 @@ const Home = () => {
   };
   const handlePaginate = async () => {
     setLoadMore(true)
-    let query = "/events/all2";
+    let query = "/events/all";
 
     
     if (nextToken) {
-      query = `/events/all2?pageToken=${nextToken}`;
+      query = `/events/all?pageToken=${nextToken}`;
     }
     try {
       const { data: res } = await axios.get(query, { withCredentials: true });
@@ -66,11 +66,28 @@ const Home = () => {
         mutate(input, false);
       }
     } catch (error) {
-      alert(error);
+      toast({
+        title: error?.response?.data?.error || "Failed to Fetch the Events",
+        status: "error",
+        duration: 1600,
+        isClosable: true,
+      });
     }finally{
       setLoadMore(false)
     }
   };
+  useEffect(()=>{
+    if(error && !isValidating && !data){
+      toast({
+        title: error?.error || "Failed to Fetch the Events",
+        status: "error",
+        duration: 1900,
+        isClosable: true,
+      });
+    }
+    
+    // eslint-disable-next-line
+  },[error])
   useEffect(() => {
     if (filter === false) {
       toast({
@@ -82,7 +99,7 @@ const Home = () => {
     }
     // eslint-disable-next-line
   }, [filter]);
-
+  
   return (
     <Container maxW="container.xl">
       <Box
@@ -178,7 +195,7 @@ const Home = () => {
           </FormControl>
         </Flex>
       </Flex>
-      {isValidating ? (
+      {(isValidating && !data) ? (
         <Center w="100%">
           <Spinner mx="auto" mt="10" size="xl" />;
         </Center>
