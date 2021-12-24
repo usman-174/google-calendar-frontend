@@ -1,20 +1,20 @@
 import useSWR from "swr";
 
 function useGetEvent(startTime, endTime, filter) {
-  let query = "/events/all2";
+  let query = "/events/all";
  
   if (endTime && filter === true) {
-    query = `/events/all2?endTime=${endTime}`;
+    query = `/events/all?endTime=${endTime}`;
   }
   if(startTime && endTime && filter === true){
-    query = `/events/all2?startTime=${startTime}&endTime=${endTime}`;
+    query = `/events/all?startTime=${startTime}&endTime=${endTime}`;
 
   }
  
-  const { data, isValidating, mutate,...rest } = useSWR(query);
+  const { data, isValidating,error, mutate,...rest } = useSWR(query);
   return {
     data,mutate,
-    isValidating,
+    isValidating,error,
     rest,
     nextToken: data?.nextPageToken || false,
   };

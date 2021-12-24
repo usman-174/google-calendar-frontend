@@ -69,7 +69,7 @@ function CreateTemplate() {
       }
     } catch (error) {
       toast({
-        title: error?.message || "Please try later",
+        title: error?.response?.data?.error || "Please try later",
         status: "error",
         duration: 2000,
         isClosable: true,
