@@ -9,9 +9,15 @@ import  { SWRConfig } from 'swr'
 import axios from "axios";
 axios.defaults.baseURL=process.env.REACT_APP_SERVER_URL || "http://localhost:5000"
 const fetcher = async (url) => {
+  // let cancelToken;
   try {
-      const { data } = await axios.get(url)
-      return data
+    // if(typeof cancelToken !== typeof undefined){
+    //   cancelToken.cancel("Cancelling the request");
+    // }
+    // cancelToken = axios.CancelToken().source()
+    const { data } = await axios.get(url)
+    return data
+      
   } catch (error) {
       throw error.response.data
   }

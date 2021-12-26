@@ -8,23 +8,23 @@ import {
   Heading,
   Input,
   Select,
-  Spinner, Textarea,
+  Spinner,
+  Textarea,
   useMediaQuery,
-  useToast,
-  Wrap,
-  WrapItem
+  useToast
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import CreateTemplate from "./CreateTemplate";
 import DeleteAlert from "./DeleteAlert";
+import EditTemplate from "./EditTemplate";
 
 const TemplateBox = () => {
-  const { data: templatesList, isValidating,error } = useSWR("/templates/all");
+  const { data: templatesList, isValidating, error } = useSWR("/templates/all");
   const [isLargerThan460] = useMediaQuery("(min-width: 460px)");
   const onClose = () => setIsOpen(false);
   const cancelRef = useRef();
-  const toast = useToast()
+  const toast = useToast();
   const [isOpen, setIsOpen] = useState(false);
 
   const [template, setTemplate] = useState("");
@@ -34,14 +34,14 @@ const TemplateBox = () => {
 
   const setTemplateById = (id) => {
     const temp = templatesList?.find((temp) => temp.id === id);
-    setTemplate(temp?.title|| "");
+    setTemplate(temp?.title || "");
   };
-  
+
   useEffect(() => {
     const messageToSet = templatesList?.find(
       (temp) => temp?.title === template
     )?.message;
-    if ((message && template) && message !== messageToSet) {
+    if (message && template && message !== messageToSet) {
       setMessage(messageToSet);
     }
     if (!templatesList?.find((temp) => temp.id === templateId)) {
@@ -49,10 +49,10 @@ const TemplateBox = () => {
       setTemplateId("");
       setMessage("");
     }
+   
     // eslint-disable-next-line
-  }, [template,setTemplateId, templatesList]);
+  }, [template, setTemplateId,templateId]);
 
-  
   useEffect(() => {
     if (error && !isValidating && !templatesList) {
       toast({
@@ -65,7 +65,7 @@ const TemplateBox = () => {
 
     // eslint-disable-next-line
   }, [error]);
-  if (isValidating &&  !error) {
+  if (isValidating && !templatesList) {
     return (
       <Center w="100%">
         <Spinner mx="auto" mt="10" size="xl" />;
@@ -73,131 +73,131 @@ const TemplateBox = () => {
     );
   }
   return (
-    <Box  shadow={"sm"}
-    borderTop={"1px"}
-    borderColor={"teal.600"}
-mt="5"
-    rounded={"sm"}>
-       <Heading mt={isLargerThan460 ?"8":2} size={isLargerThan460?"lg":"md"}textColor={"teal.600"} textAlign={"center"}>
+    <Box shadow={"sm"} mt="5" rounded={"sm"}>
+      <Heading
+        mt={isLargerThan460 ? "8" : 2}
+        size={isLargerThan460 ? "lg" : "md"}
+        textColor={"teal.600"}
+        textAlign={"center"}
+      >
         Send Message
       </Heading>
-      <Wrap spacing={isLargerThan460? "10px":"5px"}
-        align={"center"}
-       
+      <Box
+        spacing={isLargerThan460 ? "10px" : "5px"}
+        mx={"auto"}
         mb={isLargerThan460 ? null : "30px"}
-        w="full"
+        w={isLargerThan460 ? "80%":"full"}
         p="2"
         textAlign={"center"}
       >
         {/* SELECT ITEM */}
-        <WrapItem>
-          <FormControl d="flex" alignItems={"center"}>
-            <FormLabel fontSize={isLargerThan460? "md":"sm"} htmlFor="template" >
-              Template
-            </FormLabel>
-            <Select
-              placeholder={
-                template ? `Selected "${template}"` : `Select a template`
+        <FormControl d="flex" alignItems={"center"}>
+          <FormLabel
+            fontSize={isLargerThan460 ? "md" : "sm"}
+            htmlFor="template"
+          >
+            Template
+          </FormLabel>
+          <Select
+            placeholder={
+              template ? `Selected "${template}"` : `Select a template`
+            }
+            value={template}
+            onChange={(e) => {
+              if (!e.target.value) {
+                setMessage("");
+                return;
               }
-              value={template}
-              onChange={(e) => {
-                if (!e.target.value) {
-                  setMessage("");
-                  return
-                }if(e.target.value === templateId){
-                  setTemplateId("");
-                  return
-                }
-                setTemplateById(e.target.value);
-                setTemplateId(e.target.value);
-              }}
-              size={isLargerThan460? "md":"sm"}
-            >
-              {templatesList?.map((temp) => (
-                <option
-                  value={temp.id}
-                  className={temp.id}
-                  key={Math.random(8 * 930)}
-                  style={{color:temp.id === templateId ? "#2C7A7B":null,
-                fontWeight: temp.id === templateId ? "bolder":null,
+              if (e.target.value === templateId) {
+                setTemplateId("");
+                setTemplate("");
+                return;
+              }
+              setTemplateById(e.target.value);
+              setTemplateId(e.target.value);
+            }}
+            size={isLargerThan460 ? "md" : "sm"}
+          >
+            {templatesList?.map((temp) => (
+              <option
+                value={temp.id}
+                className={temp.id}
+                key={Math.random(8 * 930)}
+                style={{
+                  color: temp.id === templateId ? "#2C7A7B" : null,
+                  fontWeight: temp.id === templateId ? "bolder" : null,
                 }}
-                >
-                 {temp.title} 
-                </option>
-              ))}
-            </Select>
-            
-          </FormControl>
-        </WrapItem>
+              >
+                {temp.title}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
 
         {/* Message ITEM*/}
-        <WrapItem>
-          <FormControl my="2" d="flex" alignItems={"center"}>
-            <FormLabel fontSize={isLargerThan460? "md":"sm"}>Message</FormLabel>
-            <Textarea
-              size={"lg"}
-              value={message}
-              disabled={!template}
-              onChange={(e) => {
-                setMessage(e.target.value);
-              }}
-            ></Textarea>
-          </FormControl>
-        </WrapItem>
+        <FormControl my="2" d="flex" alignItems={"center"}>
+          <FormLabel fontSize={isLargerThan460 ? "md" : "sm"}>
+            Message
+          </FormLabel>
+          <Textarea
+            size={"lg"}
+            value={message}
+            disabled={!template}
+            onChange={(e) => {
+              setMessage(e.target.value);
+            }}
+          ></Textarea>
+        </FormControl>
         {/* PHONE NUMBER */}
-        <WrapItem>
-          <FormControl my="2" d="flex" alignItems={"center"}>
-            <FormLabel fontSize={isLargerThan460? "md":"sm"}>Phone_No</FormLabel>
-            <Input
-              type="tel"
-              value={phone}
-              disabled={!template}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-          </FormControl>
-        </WrapItem>
+        <FormControl my="2" d="flex" alignItems={"center"}>
+          <FormLabel fontSize={isLargerThan460 ? "md" : "sm"}>
+            Phone_No
+          </FormLabel>
+          <Input
+            type="tel"
+            value={phone}
+            disabled={!template}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+        </FormControl>
 
         {/* BUTTON */}
-        <WrapItem>
-          <Button
-            disabled={!template || !message || !phone}
-            mx="auto"
-            colorScheme={"teal"}
-            size={isLargerThan460? "md":"sm"}
-          >
-            Send Message
-          </Button>
-        </WrapItem>
-        
+        <Button
+          disabled={!template || !message || !phone}
+          mx="auto"
+          colorScheme={"teal"}
+          size={isLargerThan460 ? "md" : "sm"}
+        >
+          Send Message
+        </Button>
+
         {/* CREATE TEMPLATE */}
-        <WrapItem>
 
         <CreateTemplate />
-        </WrapItem>
         {/* Delete Template */}
-        <WrapItem>
-        {template.length && templateId ? (
-              <>
-                <DeleteIcon
-                  display={"inline-block"}
-                  color="red.400"
-                  _hover={{ textColor: "red.600" }}
-                  onClick={() => setIsOpen(true)}
-                  mx="5"
-                  h="20px"
-                  w="20px"
-                  cursor={"pointer"}
-                />
-                <DeleteAlert
-                  onClose={onClose}
-                  isOpen={isOpen}
-                  cancelRef={cancelRef}
-                  templateId={templateId}
-                />
-              </>
-            ) : null}
-        </WrapItem>
-      </Wrap>
+        {(template.length && templateId) ? (
+          <>
+            <DeleteIcon
+              display={"inline-block"}
+              color="red.400"
+              _hover={{ textColor: "red.600" }}
+              onClick={() => setIsOpen(true)}
+              mx="5"
+              h="40px"
+              w="40px"
+              cursor={"pointer"}
+            />
+            
+            <EditTemplate templateId={templateId} setTemplate={setTemplate}/>
+            <DeleteAlert
+              onClose={onClose}
+              isOpen={isOpen}
+              cancelRef={cancelRef}
+              templateId={templateId}
+            />
+          </>
+        ) : null}
+      </Box>
     </Box>
   );
 };
