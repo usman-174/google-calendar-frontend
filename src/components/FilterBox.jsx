@@ -1,8 +1,12 @@
 import { CloseIcon } from "@chakra-ui/icons";
 import {
-  Button, Center, FormLabel,
-  Input, Text, useMediaQuery, Wrap,
-  WrapItem
+  Box,
+  Button,
+  Center,
+  Flex, FormLabel,
+  Input,
+  Text,
+  useMediaQuery
 } from "@chakra-ui/react";
 import React from "react";
 
@@ -13,89 +17,97 @@ const FilterBox = ({
   filter,
   endDate,
   startDate,
-  filterEvents,
+  filterEvents,search
 }) => {
   const [isLargerThan460] = useMediaQuery("(min-width: 460px)");
 
   return (
     <Center>
-
-    <Wrap
-      spacing="15px"
-      // bg="##f9f9f9"
-      p="2"
-      my="2"
-    >
-      
-      <WrapItem verticalAlign={"center"}>
-        <FormLabel fontSize={isLargerThan460? "md":"sm"}>From</FormLabel>
-        <Input
-          type="datetime-local"
-          name="startDate"
-          onChange={(e) => {
-            if (!e.target.value && !endDate) {
-              setFilter(false);
-            }
-            return setStartDate(e.target.value);
-          }}
-          value={startDate}
-        />
-      </WrapItem>
-      <WrapItem verticalAlign={"center"}>
-        <FormLabel fontSize={isLargerThan460? "md":"sm"}>To</FormLabel>
-
-        <Input
-          type="datetime-local"
-          name="endDate"
-          onChange={(e) => {
-            if (!e.target.value && !startDate) {
-              setFilter(false);
-            }
-            return setEndDate(e.target.value);
-          }}
-          value={endDate}
-        />
-      </WrapItem>
-   <WrapItem>
-        <Button
-          disabled={!endDate && !startDate}
-          my="2"
-          onClick={filterEvents}
-          mx="auto"
-          size={isLargerThan460? "md":"sm"}
-          variant={"solid"}
-          colorScheme={"teal"}
+      <Flex
+        p="2"
+        w="100%"
+        align={"center"}
+        justify={"center"}
+        flexDirection={isLargerThan460 ? "row" : "column"}
+        my={isLargerThan460 ? "4" : "0"}
+      >
+        <Flex
+          mx={isLargerThan460 ? "5" : "0"}
+          align={"center"}
+          my={isLargerThan460 ? "0" : "4"}
         >
-          Apply Filter
-        </Button>
-</WrapItem>
-
-      {filter && (
-        <WrapItem>
-          <Text
-            _hover={{ textColor: "teal", textDecoration: "underline" }}
-            onClick={() => {
-              setStartDate("");
-              setEndDate("");
-              setFilter(false);
+          <FormLabel fontSize={isLargerThan460 ? "md" : "sm"}>From</FormLabel>
+          <Input
+            type="datetime-local"
+            name="startDate"
+            onChange={(e) => {
+              if (!e.target.value && !endDate) {
+                setFilter(false);
+              }
+              return setStartDate(e.target.value);
             }}
-            color="red.600"
-            fontFamily={"serif"}
-            fontWeight={"semibold"}
-            cursor={"pointer"}
+            value={startDate}
+          />
+        </Flex>
+        <Flex
+          mx={isLargerThan460 ? "5" : "0"}
+          my={isLargerThan460 ? "0" : "4"}
+          align={"center"}
+        >
+          <FormLabel fontSize={isLargerThan460 ? "md" : "sm"}>To</FormLabel>
+
+          <Input
+            type="datetime-local"
+            name="endDate"
+            onChange={(e) => {
+              if (!e.target.value && !startDate) {
+                setFilter(false);
+              }
+              return setEndDate(e.target.value);
+            }}
+            value={endDate}
+          />
+        </Flex>
+        <Box>
+          <Button
+            disabled={(!endDate && !startDate) || search}
+            onClick={filterEvents}
+            size={isLargerThan460 ? "md" : "sm"}
+            variant={"solid"}
+            colorScheme={"teal"}
           >
-            <CloseIcon h="12px" w="12px" mx="2" />
-            ResetFilter
-          </Text>
-        </WrapItem>
-      )}
-    {/* <WrapItem verticalAlign={"center"}>
+            Apply Filter
+          </Button>
+        </Box>
+
+        {!search  && filter && (
+          <Box m="2">
+            <Text
+              _hover={{ textColor: "teal", textDecoration: "underline" }}
+              onClick={() => {
+                setStartDate("");
+                setEndDate("");
+                setFilter(false);
+              }}
+              color="red.600"
+              fontFamily={"serif"}
+              fontWeight={"semibold"}
+              cursor={"pointer"}
+            >
+              <CloseIcon h="12px" w="12px" mx="2" />
+              ResetFilter
+            </Text>
+          </Box>
+        )}
+      {/* CREATE BUTTOn */}
+        {/* <Box >
         <Button my="2" mx={"4"} colorScheme={"telegram"}>
           <AddIcon mr="1" /> Create an Event
         </Button>
-      </WrapItem> */}
-      {/* FILTER END HERE */}
-    </Wrap>
+      </Box> */}
+
+        {/* FILTER END HERE */}
+      </Flex>
     </Center>
   );
 };

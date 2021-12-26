@@ -1,4 +1,5 @@
 import {
+  Box,
   Button, Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -79,7 +80,7 @@ function CreateTemplate() {
     }
   };
   return (
-    <>
+    <Box my="5">
       <Text
      
         color="red.500"
@@ -140,7 +141,7 @@ function CreateTemplate() {
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
-    </>
+    </Box>
   );
 }
 export default CreateTemplate;
