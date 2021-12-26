@@ -1,14 +1,10 @@
-import { AddIcon, DeleteIcon, CopyIcon } from "@chakra-ui/icons";
+import { CopyIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
-  Box,
-  Button,
-  Flex,
-  Grid,
-  Heading,
-  Text,
+  Box, Flex,
+  Grid, Text,
   Tooltip,
   useMediaQuery,
-  useToast,
+  useToast
 } from "@chakra-ui/react";
 import axios from "axios";
 import React from "react";
@@ -48,14 +44,8 @@ const EventTable = ({ events }) => {
   };
 
   return (
-    <>
-      <Heading my="8" textAlign={"center"}>
-        EVENTS
-      </Heading>
-      <Button mb="3" mx={isLargerThan460 ? "8" : "4"} colorScheme={"telegram"}>
-        <AddIcon mr="1" /> Create an Event
-      </Button>
-      <Box textAlign="center" m="2">
+     
+      <Box textAlign="center" mx="2" mb="15">
         {events?.length ? (
           <Grid
             templateColumns={
@@ -71,6 +61,7 @@ const EventTable = ({ events }) => {
               <Box
                 rounded="md"
                 my="2"
+                bg="#fff"
                 shadow="md"
                 borderWidth="1px"
                 key={event.id}
@@ -186,7 +177,6 @@ const EventTable = ({ events }) => {
           </Box>
         )}
       </Box>
-    </>
   );
 };
 
