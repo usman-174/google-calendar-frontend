@@ -1,11 +1,11 @@
 import {
-  Box, Button, Drawer,
+  Button, Drawer,
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
-  DrawerOverlay, FormLabel, Input, Text, Textarea, useDisclosure, useToast
+  DrawerOverlay, FormLabel, Input, Text, Textarea, useDisclosure, useMediaQuery, useToast
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useRef, useState } from "react";
@@ -15,6 +15,8 @@ function CreateTemplate() {
   const { data: templatesList, isValidating,mutate } = useSWR(
     "/templates/all"
   );
+  const [isLargerThan460] = useMediaQuery("(min-width: 460px)");
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
@@ -78,21 +80,19 @@ function CreateTemplate() {
   };
   return (
     <>
-      <Box textAlign={"right"} >
       <Text
-      as="span"
-       align="right"
-        ml="auto"
+     
         color="red.500"
+        textAlign={"center"}
         cursor={"pointer"}
         fontWeight={"semibold"}
         ref={btnRef}
         onClick={onOpen}
+        fontSize={isLargerThan460 ? "md":"xs"}
         _hover={{ textColor: "teal", textDecoration: "underline" }}
       >
         Add Template?
       </Text>
-      </Box>
       <Drawer
         isOpen={isOpen}
         placement="right"
@@ -102,10 +102,10 @@ function CreateTemplate() {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader mx="auto">Add a Template</DrawerHeader>
+          <DrawerHeader mx="auto" textTransform={"uppercase"} fontSize={isLargerThan460 ? "xl":"lg"}>Add a Template</DrawerHeader>
 
           <DrawerBody>
-            <FormLabel fontWeight={"semibold"} fontSize={"lg"}>
+            <FormLabel fontWeight={"semibold"} fontSize={isLargerThan460? "lg":"md"}>
               Title
             </FormLabel>
             <Input
@@ -113,10 +113,11 @@ function CreateTemplate() {
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Type Title here..."
             />
-            <FormLabel my="2" fontWeight={"semibold"} fontSize={"lg"}>
+            <FormLabel my="2" fontWeight={"semibold"} fontSize={isLargerThan460? "lg":"md"}>
               Message
             </FormLabel>
             <Textarea
+            size={isLargerThan460? "md":"sm"}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Type Message here..."
