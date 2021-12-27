@@ -10,7 +10,7 @@ function useGetEvent(startTime, endTime, filter,searchQuery) {
     query = `/events/all?startTime=${startTime}&endTime=${endTime}`;
 
   }
-  if(searchQuery.length && !filter){
+  if(searchQuery?.length && !filter){
     query = `/events/all?query=${searchQuery}`;
   }
  

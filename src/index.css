@@ -1,0 +1,11 @@
+.PhoneInputCountryIconImg{
+    height: 5vw;
+    padding: 10px;
+    border-radius: 3px;
+    margin: 10px;
+}
+.PhoneInputInput{
+    padding: 4px;
+    outline: 2px solid rgb(122, 122, 122)!important;
+    border-radius: 2px;
+}

@@ -1,22 +1,22 @@
 import { CopyIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
-  Box,
-  Flex,
-  Grid,
-  Text,
+  Box, Flex, Text,
   Tooltip,
   useMediaQuery,
-  useToast
+  useToast,
+  Wrap,
+  WrapItem
 } from "@chakra-ui/react";
 import axios from "axios";
 import React from "react";
 import Highlighter from "react-highlight-words";
 import { useSWRConfig } from "swr";
-
+import CreateEvent from "./CreateEvent";
 
 const EventTable = ({ events, search }) => {
   const [isLargerThan460] = useMediaQuery("(min-width: 460px)");
   const [isLargerThan650] = useMediaQuery("(min-width: 650px)");
+  const [isLargerThan950] = useMediaQuery("(min-width: 950px)");
   const toast = useToast();
 
   const { mutate } = useSWRConfig();
@@ -45,162 +45,186 @@ const EventTable = ({ events, search }) => {
   };
 
   return (
-    <Box textAlign="center" mb="15">
+    <Box mb="15" >
+      <CreateEvent />
       {events?.length ? (
-        <Grid
-          templateColumns={
-            isLargerThan650
-              ? "repeat(3, 5fr)"
-              : isLargerThan460
-              ? "repeat(2, 4fr)"
-              : "repeat(1, 3fr)"
-          }
-          gap={isLargerThan460 ? 4 : 2}
-        >
+        <Wrap justify={"center"} spacing={"8"} align={"center"}>
           {events?.map((event) => (
-            <Box
+            <WrapItem overflowY={"scroll"}
+              textAlign={"center"}
               rounded="md"
-              my="2"
+              mx={"auto"}
               bg="#fff"
               shadow="md"
               borderWidth="1px"
               key={event.id}
             >
-              <DeleteIcon
-                color="red.400"
-                onClick={() => deleteEvent(event.id)}
-                _hover={{ textColor: "red.600" }}
-                mx="12"
-                h="20px"
-                w="20px"
-                cursor={"pointer"}
-              />
-              <Flex m="2" direction={"column"}>
-                <Text
-                  textAlign={"left"}
-                  fontSize={"xs"}
-                  fontWeight={"bold"}
-                  color="black"
-                >
-                  ID :
-                </Text>
-                <Text px="2">
-                  {" "}
-                  {search ? (
-                    <Highlighter
-                      searchWords={search.split(" ")}
-                      autoEscape={true}
-                      textToHighlight={event.id}
-                    />
-                  ) : (
-                    event.id
-                  )}
-                  }
-                </Text>
-              </Flex>
-              <Flex m="2" direction="column">
-                <Text
-                  textAlign={"left"}
-                  fontSize={"xs"}
-                  fontWeight={"bold"}
-                  color="black"
-                >
-                  Phone Number :
-                </Text>
-                <Text px="2">
-                  {search ? (
-                    <Highlighter
-                      searchWords={search.split(" ")}
-                      autoEscape={true}
-                      textToHighlight={event.summary}
-                    />
-                  ) : (
-                    event.summary
-                  )}
-
-                  <Tooltip label="Copy Phone">
-                    <CopyIcon
-                      mx="4"
-                      onClick={() => {
-                        navigator.clipboard.writeText(event.summary);
-
-                        toast({
-                          title: "Phone Number Copied",
-                          description: `Copied ${event.summary}`,
-                          status: "info",
-                          duration: 1000,
-                          isClosable: true,
-                        });
-                      }}
-                      cursor={"pointer"}
-                    />
-                  </Tooltip>
-                </Text>
-              </Flex>
-              <Flex m="2" direction="column">
-                <Text
-                  textAlign={"left"}
-                  fontSize={"xs"}
-                  fontWeight={"bold"}
-                  color="black"
-                >
-                  Description :
-                </Text>
-                <Text px="2">
-                  {search ? (
-                    <Highlighter
-                      searchWords={search.split(" ")}
-                      autoEscape={true}
-                      textToHighlight={event.description}
-                    />
-                  ) : (
-                    event.description
-                  )}
-                </Text>
-              </Flex>
-
-              <Flex m="2" flexDirection={"row"} alignItems={"center"}>
-                <Flex direction={"column"}>
+              <Box
+                w={
+                  isLargerThan950
+                    ? "30vw"
+                    : isLargerThan650
+                    ? "40vw"
+                    : isLargerThan460
+                    ? "30vw"
+                    : "80vw"
+                }
+                h={
+                  isLargerThan950
+                    ? "21vw"
+                    : isLargerThan650
+                    ? "48vw"
+                    : isLargerThan460
+                    ? "30vw"
+                    : "80vw"
+                }
+              >
+                <DeleteIcon
+                  color="red.400"
+                  onClick={() => deleteEvent(event.id)}
+                  _hover={{ textColor: "red.600" }}
+                  mx="12"
+                  h="20px"
+                  w="20px"
+                  cursor={"pointer"}
+                />
+                <Flex m="2" direction={"column"}>
                   <Text
                     textAlign={"left"}
                     fontSize={"xs"}
                     fontWeight={"bold"}
                     color="black"
                   >
-                    Starting Time :
+                    ID :
                   </Text>
-                  <Text px="1" fontSize={"small"}>
-                    {new Date(event.start?.dateTime).toDateString()} at{" "}
-                    {new Date(event.start?.dateTime).toLocaleString("en-US", {
-                      hour: "numeric",
-                      minute: "numeric",
-                      hour12: true,
-                    })}
+                  <Text px="2">
+                    {search ? (
+                      <Highlighter
+                        searchWords={search.split(" ")}
+                        autoEscape={true}
+                        textToHighlight={event.id}
+                      />
+                    ) : (
+                      event.id
+                    )}
                   </Text>
                 </Flex>
-
-                <Flex direction={"column"}>
+                <Flex m="2" direction="column">
                   <Text
                     textAlign={"left"}
                     fontSize={"xs"}
                     fontWeight={"bold"}
                     color="black"
                   >
-                    Ending Time :
+                    Phone Number :
                   </Text>
-                  <Text mx="3" px="1" fontSize={"small"} ml={"auto"}>
-                    {new Date(event.end?.dateTime).toDateString()} at{" "}
-                    {new Date(event.end?.dateTime).toLocaleString("en-US", {
-                      hour: "numeric",
-                      minute: "numeric",
-                      hour12: true,
-                    })}
+                  <Text px="2">
+                    {search ? (
+                      <Highlighter
+                        searchWords={search.split(" ")}
+                        autoEscape={true}
+                        textToHighlight={event.summary}
+                      />
+                    ) : (
+                      event.summary
+                    )}
+                    <Tooltip label="Copy Phone">
+                      <CopyIcon
+                        mx="4"
+                        onClick={() => {
+                          navigator.clipboard.writeText(event.summary);
+
+                          toast({
+                            title: "Phone Number Copied",
+                            description: `Copied ${event.summary}`,
+                            status: "info",
+                            duration: 1000,
+                            isClosable: true,
+                          });
+                        }}
+                        cursor={"pointer"}
+                      />
+                    </Tooltip>
                   </Text>
                 </Flex>
-              </Flex>
-            </Box>
+                <Flex m="2" direction="column">
+                  <Text
+                    textAlign={"left"}
+                    fontSize={"xs"}
+                    fontWeight={"bold"}
+                    color="black"
+                  >
+                    Description :
+                  </Text>
+                  <Text noOfLines={4}>
+                    {search ? (
+                      <Highlighter
+                        searchWords={search.split(" ")}
+                        autoEscape={true}
+                        textToHighlight={event.description}
+                      />
+                    ) : (
+                      `${event.description}yes ${event.description} yes ${event.description}`
+                    )}
+                  </Text>
+                </Flex>
+
+                <Flex
+                  mt="10"
+                  flexDirection={"row"}
+                  justify={"space-around"}
+                  alignItems={"end"}
+                >
+                  <Flex
+                    direction={"column"}
+                    alignItems={"center"}
+                    justifyContent={"start"}
+                  >
+                    <Text
+                      textAlign={"left"}
+                      fontSize={"xs"}
+                      fontWeight={"bold"}
+                      color="black"
+                    >
+                      Starting Time :
+                    </Text>
+                    <Text px="1" fontSize={"small"}>
+                      {new Date(event.start?.dateTime).toDateString()} at{" "}
+                      {new Date(event.start?.dateTime).toLocaleString("en-US", {
+                        hour: "numeric",
+                        minute: "numeric",
+                        hour12: true,
+                      })}
+                    </Text>
+                  </Flex>
+
+                  <Flex
+                    direction={"column"}
+                    alignItems={"center"}
+                    justifyContent={"end"}
+                  >
+                    <Text
+                      textAlign={"right"}
+                      fontSize={"xs"}
+                      fontWeight={"bold"}
+                      color="black"
+                    >
+                      Ending Time :
+                    </Text>
+                    <Text px="1" fontSize={"small"}>
+                      {new Date(event.end?.dateTime).toDateString()} at{" "}
+                      {new Date(event.end?.dateTime).toLocaleString("en-US", {
+                        hour: "numeric",
+                        minute: "numeric",
+                        hour12: true,
+                      })}
+                    </Text>
+                  </Flex>
+                </Flex>
+              </Box>
+            </WrapItem>
           ))}
-        </Grid>
+        </Wrap>
       ) : (
         <Box mx="auto" textAlign={"center"} my="5" fontSize={"3xl"}>
           NO EVENTS AVAILABLE
