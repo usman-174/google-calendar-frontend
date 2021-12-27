@@ -108,6 +108,7 @@ const IframeTabs = () => {
             my="5"
             textAlign={"center"}
             size={isLargerThan460 ? "lg" : "md"}
+            textColor={"teal.800"}
           >
             EVENTS
           </Heading>

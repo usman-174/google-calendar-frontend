@@ -75,9 +75,9 @@ const TemplateBox = () => {
   return (
     <Box shadow={"sm"} mt="5" rounded={"sm"}>
       <Heading
-        mt={isLargerThan460 ? "8" : 2}
+        my={isLargerThan460 ? "8" : 2}
         size={isLargerThan460 ? "lg" : "md"}
-        textColor={"teal.600"}
+        textColor={"teal.800"}
         textAlign={"center"}
       >
         Send Message

@@ -1,9 +1,7 @@
 import { CloseIcon } from "@chakra-ui/icons";
 import {
   Box,
-  Button,
-  Center,
-  Flex, FormLabel,
+  Button, Flex, FormLabel,
   Input,
   Text,
   useMediaQuery
@@ -22,10 +20,10 @@ const FilterBox = ({
   const [isLargerThan460] = useMediaQuery("(min-width: 460px)");
 
   return (
-    <Center>
+    <Box w="full">
       <Flex
         p="2"
-        w="100%"
+        // w="100%"
         align={"center"}
         justify={"center"}
         flexDirection={isLargerThan460 ? "row" : "column"}
@@ -108,7 +106,7 @@ const FilterBox = ({
 
         {/* FILTER END HERE */}
       </Flex>
-    </Center>
+    </Box>
   );
 };
 
