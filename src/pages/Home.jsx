@@ -1,5 +1,5 @@
 import {
-  Box, Container
+  Box
 } from "@chakra-ui/react";
 import React from "react";
 import Calendar from "../components/Calendar";

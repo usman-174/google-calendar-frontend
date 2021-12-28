@@ -218,12 +218,12 @@ function EditTemplate({ templateId, setTemplate }) {
                     <TagLabel>{keyword}</TagLabel>
                     <TagRightIcon
                       onClick={() => {
-                        {
+                        
                           const filtered = list.filter(
                             (word) => word !== keyword
                           );
                           return setList(filtered);
-                        }
+                        
                       }}
                       _hover={{ color: "red" }}
                       cursor={"pointer"}

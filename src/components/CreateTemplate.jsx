@@ -188,10 +188,10 @@ function CreateTemplate() {
               <Tag mx="2" variant="outline" size="lg"  key={keyword}  colorScheme="blue">
                 <TagLabel>{keyword}</TagLabel>
                 <TagRightIcon onClick={()=>{
-                  {
+                  
                     const filtered = list.filter((word)=>word!==keyword)
-                    setList(filtered)
-                  }
+                    return setList(filtered)
+                  
                 }}_hover={{color:"red"}} cursor={"pointer"} as={DeleteIcon} />
               </Tag>)}
             </HStack>
