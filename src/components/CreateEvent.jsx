@@ -9,20 +9,27 @@ import {
   DrawerHeader,
   DrawerOverlay,
   FormLabel,
+  HStack,
   Input,
+  Select,
+  Tag,
+  TagLabel,
   Text,
   Textarea,
   useDisclosure,
   useMediaQuery,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
+import { useEffect } from "react";
 import { useRef, useState } from "react";
-import PhoneInput from 'react-phone-number-input';
+import PhoneInput from "react-phone-number-input";
+import useSWR from "swr";
 import useGetEvent from "../hooks/useGetEvents";
 
 function CreateEvent() {
-  const {  isValidating, mutate } = useGetEvent();
+  const { isValidating, mutate } = useGetEvent();
+  const { data: templatesList } = useSWR("/templates/all");
   const [isLargerThan460] = useMediaQuery("(min-width: 460px)");
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -30,9 +37,12 @@ function CreateEvent() {
   const [phone, setPhone] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [template, setTemplate] = useState("");
+  const [keywords, setkeywords] = useState([]);
   const btnRef = useRef();
   const toast = useToast();
   const handleSubmit = async () => {
+    console.log("Lol");
     if (!description || !phone) {
       toast({
         title: "Please provide all details of the Event.",
@@ -51,6 +61,15 @@ function CreateEvent() {
       });
       return;
     }
+    if (!keywords?.length) {
+      toast({
+        title: "Please select keywords from a template.",
+        status: "error",
+        duration: 1800,
+        isClosable: true,
+      });
+      return;
+    }
     if (!endDate) {
       toast({
         title: "Atleast provide End Date.",
@@ -60,18 +79,23 @@ function CreateEvent() {
       });
       return;
     }
+    let wordString = "";
+    keywords.forEach((word) => {
+      wordString += " " + word;
+    });
+
     try {
       const { data } = await axios.post("/events/new", {
-        description,
+        description:description + " ||"+wordString,
         summary: phone,
         startTime: startDate,
         endTime: endDate,
       });
       if (data?.success) {
-          setDescription("")
-          setEndDate("")
-          setStartDate("")
-          setPhone("")
+        setDescription("");
+        setEndDate("");
+        setStartDate("");
+        setPhone("");
         toast({
           title: "Event Created",
           status: "success",
@@ -79,9 +103,8 @@ function CreateEvent() {
           isClosable: true,
         });
         mutate();
-        if(!isValidating){
-
-            onClose();
+        if (!isValidating) {
+          onClose();
         }
       }
     } catch (error) {
@@ -93,13 +116,21 @@ function CreateEvent() {
       });
     }
   };
+  useEffect(() => {
+    if (template) {
+      setkeywords(
+        templatesList.find((temp) => temp.title === template)?.keywords
+      );
+    }
+  }, [setTemplate, setkeywords, templatesList, template, keywords]);
   return (
-    <Box my="5">
+    <Box my="5" ml={isLargerThan460 ? "56":null} mx={isLargerThan460 ? null:"auto"}>
       <Button
         mx={isLargerThan460 ? null : "auto"}
         my={isLargerThan460 ? "5" : "2"}
         variant={"outline"}
         p="6"
+        disabled={isValidating}
         colorScheme={"twitter"}
         textAlign={isLargerThan460 ? "center" : "left"}
         ref={btnRef}
@@ -172,6 +203,56 @@ function CreateEvent() {
               </Text>
             )}
             <FormLabel
+              fontWeight={"semibold"}
+              fontSize={isLargerThan460 ? "lg" : "md"}
+            >
+              Set Keywords
+            </FormLabel>
+            <Select
+              placeholder={"Select a template"}
+              value={template}
+              onChange={(e) => {
+                setTemplate(e.target.value);
+              }}
+              size={isLargerThan460 ? "md" : "sm"}
+            >
+              {templatesList?.map((temp) => (
+                <option
+                  value={temp.title}
+                  className={temp.title}
+                  key={Math.random(8 * 930)}
+                  style={{
+                    color: temp.title === template ? "#2C7A7B" : null,
+                    fontWeight: temp.title === template ? "bolder" : null,
+                  }}
+                >
+                  {temp.title}
+                </option>
+              ))}
+            </Select>
+            <HStack spacing={4}>
+              {keywords.map((word) => (
+                <div
+                    key={word}
+
+                >
+                  <Tag
+                    p="2"
+                    m="2"
+                    rounded={"md"}
+                    color={"MenuText"}
+                    size={"ls"}
+                    variant="outline"
+                    colorScheme="teal"
+                  >
+                    <TagLabel>{word}</TagLabel>
+                    {/* <TagRightIcon as={MdSettings} /> */}
+                  </Tag>
+                </div>
+              ))}
+              )
+            </HStack>
+            <FormLabel
               my="2"
               fontWeight={"semibold"}
               fontSize={isLargerThan460 ? "lg" : "md"}
@@ -183,16 +264,24 @@ function CreateEvent() {
               value={phone}
               defaultCountry="US"
               onChange={setPhone}
-              
               placeholder="Type Phone Number here..."
             />
           </DrawerBody>
 
           <DrawerFooter>
-            <Button variant="outline" disabled={isValidating} mr={3} onClick={onClose}>
+            <Button
+              variant="outline"
+              disabled={isValidating}
+              mr={3}
+              onClick={onClose}
+            >
               Cancel
             </Button>
-            <Button  onClick={handleSubmit} isLoading={isValidating} colorScheme="teal">
+            <Button
+              onClick={handleSubmit}
+              isLoading={isValidating}
+              colorScheme="teal"
+            >
               Create
             </Button>
           </DrawerFooter>

@@ -14,6 +14,8 @@ import useGetEvent from "../hooks/useGetEvents";
 import EventTable from "./EventTable";
 import FilterBox from "./FilterBox";
 import TemplateBox from "./TemplateBox";
+import CreateEvent from "./CreateEvent";
+
 const IframeTabs = () => {
   const [isLargerThan460] = useMediaQuery("(min-width: 460px)");
   const toast = useToast();
@@ -58,7 +60,6 @@ const IframeTabs = () => {
 
           totalItems: res.totalItems,
         };
-        console.log("Data to mutate= ", input);
         mutate(input, false);
       }
     } catch (error) {
@@ -97,7 +98,7 @@ const IframeTabs = () => {
   }, [filter]);
 
   return (
-    <Tabs mt="5"  isFitted  variant='soft-rounded' colorScheme='telegram'>
+    <Tabs  mt="5"  isFitted  variant='soft-rounded' colorScheme='telegram'>
       <TabList>
         <Tab>Events</Tab>
         <Tab>Send Message</Tab>
@@ -130,7 +131,7 @@ const IframeTabs = () => {
             setFilter={setFilter}
             setStartDate={setStartDate}
           />
-
+          <CreateEvent />
           {isValidating && !data ? (
             <Center w="100%">
               <Spinner mx="auto" mt="10" size="xl" />;

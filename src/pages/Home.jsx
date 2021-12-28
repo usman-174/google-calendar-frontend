@@ -4,20 +4,23 @@ import {
 import React from "react";
 import Calendar from "../components/Calendar";
 import IframeTabs from "../components/IframeTabs";
+import Navbar from "../components/Navbar";
 
 
 const Home = () => {
   
   return (
-    <Container maxW="container.xl">
+    <>
+      <Navbar/>
       {/* Calendar */}
-      <Calendar />
-      <Box p="2" my="5">
+      <Box mx="2" my="0">
 
-        <IframeTabs/>
+      <Calendar />
+
+        <IframeTabs />
       </Box>
     
-    </Container>
+    </>
   );
 };
 

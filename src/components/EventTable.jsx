@@ -1,6 +1,7 @@
 import { CopyIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
-  Box, Flex, Text,
+  Box,
+  Flex, Text,
   Tooltip,
   useMediaQuery,
   useToast,
@@ -11,7 +12,7 @@ import axios from "axios";
 import React from "react";
 import Highlighter from "react-highlight-words";
 import { useSWRConfig } from "swr";
-import CreateEvent from "./CreateEvent";
+import ShowKeywords from "./ShowKeywords";
 
 const EventTable = ({ events, search }) => {
   const [isLargerThan460] = useMediaQuery("(min-width: 460px)");
@@ -45,12 +46,12 @@ const EventTable = ({ events, search }) => {
   };
 
   return (
-    <Box mb="15" >
-      <CreateEvent />
+    <Box mb="15">
       {events?.length ? (
         <Wrap justify={"center"} spacing={"8"} align={"center"}>
           {events?.map((event) => (
-            <WrapItem overflowY={"scroll"}
+            <WrapItem
+              overflowY={"scroll"}
               textAlign={"center"}
               rounded="md"
               mx={"auto"}
@@ -109,6 +110,47 @@ const EventTable = ({ events, search }) => {
                     )}
                   </Text>
                 </Flex>
+                <Flex m="2" direction={"column"}>
+                  <Text
+                    textAlign={"left"}
+                    fontSize={"xs"}
+                    fontWeight={"bold"}
+                    color="black"
+                  >
+                    Keywords :
+                  </Text>
+                  {search ? (
+                    <Highlighter
+                      searchWords={search.split(" ")}
+                      autoEscape={true}
+                      textToHighlight={(event.description.split(" || ")[1]).toUpperCase()}
+                    />
+                  ) : (
+                    // <HStack mx="auto" my="2" spacing={"10"} >
+                    //   {event.description
+                    //     .split(" || ")[1]
+                    //     .toUpperCase()
+                    //     .split(" ")
+                    //     .map((keyword) => (
+                    //       <Box  textAlign={"center"} key={keyword}>
+                    //         <Tag
+                    //           p="2"
+                    //           rounded={"md"}
+                    //           color={"MenuText"}
+                    //           size={"md"}
+                    //           variant="outline"
+                    //           colorScheme="teal"
+                    //         >
+                    //           <TagLabel>{keyword}</TagLabel>
+                    //           {/* <TagRightIcon as={MdSettings} /> */}
+                    //         </Tag>
+                    //       </Box>
+                    //     ))}
+                    //   )
+                    // </HStack>
+                    <ShowKeywords description={event.description}/>
+                  )}
+                </Flex>
                 <Flex m="2" direction="column">
                   <Text
                     textAlign={"left"}
@@ -161,10 +203,10 @@ const EventTable = ({ events, search }) => {
                       <Highlighter
                         searchWords={search.split(" ")}
                         autoEscape={true}
-                        textToHighlight={event.description}
+                        textToHighlight={event.description.split(" || ")[0]}
                       />
                     ) : (
-                      `${event.description}yes ${event.description} yes ${event.description}`
+                      `${event.description.split(" || ")[0]}`
                     )}
                   </Text>
                 </Flex>

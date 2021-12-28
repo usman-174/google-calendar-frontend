@@ -23,7 +23,6 @@ const FilterBox = ({
     <Box w="full">
       <Flex
         p="2"
-        // w="100%"
         align={"center"}
         justify={"center"}
         flexDirection={isLargerThan460 ? "row" : "column"}
@@ -32,8 +31,7 @@ const FilterBox = ({
         <Flex
           mx={isLargerThan460 ? "5" : "0"}
           align={"center"}
-          my={isLargerThan460 ? "0" : "4"}
-        >
+          flexDirection={isLargerThan460 ? "row" : "column"}        >
           <FormLabel fontSize={isLargerThan460 ? "md" : "sm"}>From</FormLabel>
           <Input
             type="datetime-local"
@@ -49,8 +47,9 @@ const FilterBox = ({
         </Flex>
         <Flex
           mx={isLargerThan460 ? "5" : "0"}
-          my={isLargerThan460 ? "0" : "4"}
-          align={"center"}
+          my={isLargerThan460 ? "0" : "3"}
+
+          align={"center"}flexDirection={isLargerThan460 ? "row" : "column"}
         >
           <FormLabel fontSize={isLargerThan460 ? "md" : "sm"}>To</FormLabel>
 

@@ -6,12 +6,15 @@ import {
   FormControl,
   FormLabel,
   Heading,
+  HStack,
   Input,
   Select,
   Spinner,
+  Tag,
+  TagLabel,
   Textarea,
   useMediaQuery,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
@@ -31,6 +34,7 @@ const TemplateBox = () => {
   const [templateId, setTemplateId] = useState("");
   const [message, setMessage] = useState("");
   const [phone, setPhone] = useState("");
+  const [keywords, setkeywords] = useState([]);
 
   const setTemplateById = (id) => {
     const temp = templatesList?.find((temp) => temp.id === id);
@@ -41,17 +45,24 @@ const TemplateBox = () => {
     const foundTemplates = templatesList?.find(
       (temp) => temp?.title === template
     );
-    if (!message || (message !== foundTemplates?.message)) {
+
+    if (!message || message !== foundTemplates?.message) {
       setMessage(foundTemplates?.message);
+      
+    }
+    if(!keywords || keywords !== foundTemplates?.keywords){
+      setkeywords(
+        foundTemplates?.keywords
+      );
     }
     if (!templatesList?.find((temp) => temp.id === templateId)) {
       setTemplate("");
       setTemplateId("");
       setMessage("");
     }
-   
+
     // eslint-disable-next-line
-  }, [template, setTemplate,setTemplateId,templateId]);
+  }, [template, setTemplate, setTemplateId, templateId]);
 
   useEffect(() => {
     if (error && !isValidating && !templatesList) {
@@ -86,7 +97,7 @@ const TemplateBox = () => {
         spacing={isLargerThan460 ? "10px" : "5px"}
         mx={"auto"}
         mb={isLargerThan460 ? null : "30px"}
-        w={isLargerThan460 ? "80%":"full"}
+        w={isLargerThan460 ? "80%" : "full"}
         p="2"
         textAlign={"center"}
       >
@@ -99,31 +110,31 @@ const TemplateBox = () => {
             Template
           </FormLabel>
           <Select
-            placeholder={templatesList?.length ? 
-              template ? `Selected "${template}"` : `Select a template` : "No Templates available"
+            placeholder={
+              templatesList?.length
+                ? template
+                  ? `Selected "${template}"`
+                  : `Select a template`
+                : "No Templates available"
             }
             value={template}
             onChange={(e) => {
               if (!e.target.value) {
-                console.log("No Id found");
 
                 setMessage("");
                 return;
               }
               if (e.target.value === templateId) {
-                console.log("Again select same");
                 setTemplateId("");
                 setTemplate("");
                 return;
               }
               setTemplateById(e.target.value);
               setTemplateId(e.target.value);
-              console.log("Setting template Id and message by templateId");
-
             }}
             size={isLargerThan460 ? "md" : "sm"}
           >
-            {(templatesList||[])?.map((temp) => (
+            {(templatesList || [])?.map((temp) => (
               <option
                 value={temp.id}
                 className={temp.id}
@@ -138,7 +149,25 @@ const TemplateBox = () => {
             ))}
           </Select>
         </FormControl>
-
+        <HStack justify={"center"} align={"center"} spacing={4}>
+          {keywords?.map((word) => (
+            <Box  key={word}>
+              <Tag
+                p="2"
+                m="2"
+                rounded={"md"}
+                color={"MenuText"}
+                size={"ls"}
+                variant="outline"
+                colorScheme="teal"
+              >
+                <TagLabel>{word}</TagLabel>
+                {/* <TagRightIcon as={MdSettings} /> */}
+              </Tag>
+            </Box>
+          ))}
+          )
+        </HStack>
         {/* Message ITEM*/}
         <FormControl my="2" d="flex" alignItems={"center"}>
           <FormLabel fontSize={isLargerThan460 ? "md" : "sm"}>
@@ -181,7 +210,7 @@ const TemplateBox = () => {
 
         <CreateTemplate />
         {/* Delete Template */}
-        {(template.length && templateId) ? (
+        {template.length && templateId ? (
           <>
             <DeleteIcon
               display={"inline-block"}
@@ -193,11 +222,12 @@ const TemplateBox = () => {
               w="40px"
               cursor={"pointer"}
             />
-            
-            <EditTemplate templateId={templateId} setTemplate={setTemplate}/>
+
+            <EditTemplate templateId={templateId} setTemplate={setTemplate} />
             <DeleteAlert
               onClose={onClose}
               isOpen={isOpen}
+              setTemplateId={setTemplateId}
               cancelRef={cancelRef}
               templateId={templateId}
             />

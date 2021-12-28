@@ -1,30 +1,49 @@
 import {
   Box,
-  Button, Drawer,
+  Button,
+  Drawer,
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
-  DrawerOverlay, FormLabel, Input, Text, Textarea, useDisclosure, useMediaQuery, useToast
+  DrawerOverlay,
+  FormLabel,
+  HStack,
+  Input,
+  Tag,
+  TagLabel,
+  TagRightIcon,
+  Text,
+  Textarea,
+  useDisclosure,
+  useMediaQuery,
+  useToast,
 } from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
+
 import axios from "axios";
 import { useRef, useState } from "react";
 import useSWR from "swr";
 
 function CreateTemplate() {
-  const { data: templatesList, isValidating,mutate } = useSWR(
-    "/templates/all"
-  );
+  const {
+    data: templatesList,
+    isValidating,
+    mutate,
+  } = useSWR("/templates/all");
   const [isLargerThan460] = useMediaQuery("(min-width: 460px)");
-
+  const [tag, setTag] = useState("");
+  const [list, setList] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [title, setTitle] = useState("");
+
   const [message, setMessage] = useState("");
   const btnRef = useRef();
   const toast = useToast();
+
   const handleSubmit = async () => {
-    if (!title || !message) {
+    if (!title || !message || !list.length) {
       toast({
         title: "Please provide required info.",
         status: "error",
@@ -45,7 +64,7 @@ function CreateTemplate() {
     try {
       const { data } = await axios.post("/templates/new", {
         title,
-        message,
+        message,keywords:list
       });
       if (data?.error) {
         toast({
@@ -63,11 +82,10 @@ function CreateTemplate() {
           duration: 1600,
           isClosable: true,
         });
-        if(!isValidating && templatesList?.length){
-
-            mutate([...templatesList,data],false);
-            onClose();
-            return
+        if (!isValidating && templatesList?.length) {
+          mutate([...templatesList, data], false);
+          onClose();
+          return;
         }
       }
     } catch (error) {
@@ -79,23 +97,28 @@ function CreateTemplate() {
       });
     }
   };
+  const AddtoList = () => {
+    setList([...list, tag]);
+    setTag("");
+  };
+ 
   return (
     <Box my="4">
       <Text
-     
         color="red.500"
         textAlign={"center"}
         cursor={"pointer"}
         fontWeight={"semibold"}
         ref={btnRef}
         onClick={onOpen}
-        fontSize={isLargerThan460 ? "md":"xs"}
+        fontSize={isLargerThan460 ? "md" : "xs"}
         _hover={{ textColor: "teal", textDecoration: "underline" }}
       >
         Add Template?
       </Text>
       <Drawer
         isOpen={isOpen}
+        size={isLargerThan460 ? "lg" : "md"}
         placement="right"
         onClose={onClose}
         finalFocusRef={btnRef}
@@ -103,10 +126,19 @@ function CreateTemplate() {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader mx="auto" textTransform={"uppercase"} fontSize={isLargerThan460 ? "xl":"lg"}>Add a Template</DrawerHeader>
+          <DrawerHeader
+            mx="auto"
+            textTransform={"uppercase"}
+            fontSize={isLargerThan460 ? "xl" : "lg"}
+          >
+            Add a Template
+          </DrawerHeader>
 
           <DrawerBody>
-            <FormLabel fontWeight={"semibold"} fontSize={isLargerThan460? "lg":"md"}>
+            <FormLabel
+              fontWeight={"semibold"}
+              fontSize={isLargerThan460 ? "lg" : "md"}
+            >
               Title
             </FormLabel>
             <Input
@@ -114,11 +146,15 @@ function CreateTemplate() {
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Type Title here..."
             />
-            <FormLabel my="2" fontWeight={"semibold"} fontSize={isLargerThan460? "lg":"md"}>
+            <FormLabel
+              my="2"
+              fontWeight={"semibold"}
+              fontSize={isLargerThan460 ? "lg" : "md"}
+            >
               Message
             </FormLabel>
             <Textarea
-            size={isLargerThan460? "md":"sm"}
+              size={isLargerThan460 ? "md" : "sm"}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Type Message here..."
@@ -129,8 +165,37 @@ function CreateTemplate() {
                 Atleast {30 - message.length} more words{" "}
               </Text>
             )}
-          </DrawerBody>
+            <FormLabel
+              fontWeight={"semibold"}
+              fontSize={isLargerThan460 ? "lg" : "md"}
+            >
+              Keywords
+            </FormLabel>
+            <Input
+            name="tag"
+              w="60%"
+              value={tag}
+              onChange={(e) => setTag(e.target.value)}
+              placeholder="Type Keyword here..."
+            />
 
+            <Button onClick={AddtoList} mx="3" mb="1" disabled={tag.length < 4}>
+              Add
+            </Button>
+           
+          <HStack spacing={4} my="3">{list?.map((keyword)=>
+              
+              <Tag mx="2" variant="outline" size="lg"  key={keyword}  colorScheme="blue">
+                <TagLabel>{keyword}</TagLabel>
+                <TagRightIcon onClick={()=>{
+                  {
+                    const filtered = list.filter((word)=>word!==keyword)
+                    setList(filtered)
+                  }
+                }}_hover={{color:"red"}} cursor={"pointer"} as={DeleteIcon} />
+              </Tag>)}
+            </HStack>
+          </DrawerBody>
           <DrawerFooter>
             <Button variant="outline" mr={3} onClick={onClose}>
               Cancel

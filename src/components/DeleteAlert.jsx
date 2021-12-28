@@ -3,7 +3,7 @@ import axios from 'axios'
 import React from 'react'
 import useSWR from 'swr';
 
-const DeleteAlert = ({isOpen,cancelRef,onClose,templateId}) => {
+const DeleteAlert = ({isOpen,cancelRef,onClose,templateId,setTemplateId}) => {
     const { data:templateList,mutate} = useSWR(
         "/templates/all"
       );
@@ -20,8 +20,9 @@ const DeleteAlert = ({isOpen,cancelRef,onClose,templateId}) => {
                     duration: 1600,
                     isClosable: true,
                   });
-                  onClose()
+                  setTemplateId("")
                   mutate(templateList.filter(temp=>temp.id!== templateId),true)
+                  onClose()
                   return
             }
         } catch (error) {

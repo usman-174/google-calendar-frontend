@@ -1,34 +1,40 @@
-import { EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
-    Box,
-    Button,
-    Drawer,
-    DrawerBody,
-    DrawerCloseButton,
-    DrawerContent,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerOverlay,
-    FormLabel,
-    Input, Textarea,
-    useDisclosure,
-    useMediaQuery,
-    useToast
+  Box,
+  Button,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  FormLabel,
+  HStack,
+  Input,
+  Tag,
+  TagLabel,
+  TagRightIcon,
+  Textarea,
+  useDisclosure,
+  useMediaQuery,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 
-function EditTemplate({ templateId ,setTemplate}) {
-  const {
-    data: templatesList,
-    mutate,
-  } = useSWR("/templates/all");
+function EditTemplate({ templateId, setTemplate }) {
+  const { data: templatesList, mutate } = useSWR("/templates/all");
   const [isLargerThan460] = useMediaQuery("(min-width: 460px)");
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [title, setTitle] = useState(
     templatesList?.find((temp) => temp.id === templateId)?.title
+  );
+  const [tag, setTag] = useState("");
+  const [list, setList] = useState(
+    templatesList?.find((temp) => temp.id === templateId)?.keywords
   );
   const [message, setMessage] = useState(
     templatesList?.find((temp) => temp.id === templateId)?.message
@@ -38,14 +44,21 @@ function EditTemplate({ templateId ,setTemplate}) {
   const toast = useToast();
   const handleSubmit = async () => {
     const options = {};
-    if( message !== templatesList?.find((temp) => temp.id === templateId)?.message && title !== templatesList?.find((temp) => temp.id === templateId)?.title){
+    if (
+      message ===
+        templatesList?.find((temp) => temp.id === templateId)?.message
+         &&
+      title === templatesList?.find((temp) => temp.id === templateId)?.title
+       &&
+       list === templatesList?.find((temp) => temp.id === templateId)?.keywords
+    ) {
       toast({
-              title: "Please change the details",
-              status: "error",
-              duration: 2000,
-              isClosable: true,
-            });
-            return
+        title: "Please change the details",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+      });
+      return;
     }
     if (
       message !== templatesList?.find((temp) => temp.id === templateId)?.message
@@ -57,6 +70,12 @@ function EditTemplate({ templateId ,setTemplate}) {
     ) {
       options.title = title;
     }
+     if (
+      list !== templatesList?.find((temp) => temp.id === templateId)?.keywords
+    ) {
+      options.keywords = list;
+    }
+    
     try {
       const { data } = await axios.put(
         "/templates/edit/" + templateId,
@@ -78,10 +97,10 @@ function EditTemplate({ templateId ,setTemplate}) {
           duration: 1600,
           isClosable: true,
         });
-        setTemplate(data.title)
-        mutate()
-        onClose()
-        return
+        setTemplate(data.title);
+        mutate();
+        onClose();
+        return;
       }
     } catch (error) {
       toast({
@@ -92,17 +111,20 @@ function EditTemplate({ templateId ,setTemplate}) {
       });
     }
   };
-  useEffect(()=>{
-      if(templatesList?.length){
-
-          setTitle(
-              templatesList?.find((temp) => temp.id === templateId)?.title
-            )
-            setMessage(
-              templatesList?.find((temp) => temp.id === templateId)?.message
-            )
-      }
-  },[templatesList,setTemplate,templateId])
+  const AddtoList = () => {
+    setList([...list, tag]);
+    setTag("");
+  };
+  useEffect(() => {
+    if (templatesList?.length) {
+      const found = templatesList?.find((temp) => temp.id === templateId)
+      setTitle(found?.title);
+      setMessage(
+        found?.message
+      );
+      setList(found?.keywords)
+    }
+  }, [templatesList, setTemplate, templateId]);
   return (
     <>
       <EditIcon
@@ -112,6 +134,7 @@ function EditTemplate({ templateId ,setTemplate}) {
         ref={btnRef}
         onClick={onOpen}
         mx="5"
+       
         h="40px"
         w="40px"
         cursor={"pointer"}
@@ -119,6 +142,7 @@ function EditTemplate({ templateId ,setTemplate}) {
 
       <Box my="5">
         <Drawer
+         size={isLargerThan460 ? "lg" : "md"}
           isOpen={isOpen}
           placement="right"
           onClose={onClose}
@@ -132,7 +156,7 @@ function EditTemplate({ templateId ,setTemplate}) {
               textTransform={"uppercase"}
               fontSize={isLargerThan460 ? "xl" : "lg"}
             >
-              Add a Template
+              Edit Template
             </DrawerHeader>
 
             <DrawerBody>
@@ -160,7 +184,54 @@ function EditTemplate({ templateId ,setTemplate}) {
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Type Message here..."
               />
-             
+              <FormLabel
+                fontWeight={"semibold"}
+                fontSize={isLargerThan460 ? "lg" : "md"}
+              >
+                Keywords
+              </FormLabel>
+              <Input
+                name="tag"
+                w="60%"
+                value={tag}
+                onChange={(e) => setTag(e.target.value)}
+                placeholder="Type Keyword here..."
+              />
+
+              <Button
+                onClick={AddtoList}
+                mx="3"
+                mb="1"
+                disabled={tag.length < 4}
+              >
+                Add
+              </Button>
+              <HStack spacing={4} my="3">
+                {list?.map((keyword) => (
+                  <Tag
+                    mx="2"
+                    variant="outline"
+                    size="lg"
+                    key={keyword}
+                    colorScheme="blue"
+                  >
+                    <TagLabel>{keyword}</TagLabel>
+                    <TagRightIcon
+                      onClick={() => {
+                        {
+                          const filtered = list.filter(
+                            (word) => word !== keyword
+                          );
+                          return setList(filtered);
+                        }
+                      }}
+                      _hover={{ color: "red" }}
+                      cursor={"pointer"}
+                      as={DeleteIcon}
+                    />
+                  </Tag>
+                ))}{" "}
+              </HStack>
             </DrawerBody>
 
             <DrawerFooter>
