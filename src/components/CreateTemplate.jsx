@@ -80,7 +80,7 @@ function CreateTemplate() {
     }
   };
   return (
-    <Box my="5">
+    <Box my="4">
       <Text
      
         color="red.500"

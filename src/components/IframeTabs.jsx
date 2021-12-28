@@ -97,7 +97,7 @@ const IframeTabs = () => {
   }, [filter]);
 
   return (
-    <Tabs  isFitted  variant='soft-rounded' colorScheme='telegram'>
+    <Tabs mt="5"  isFitted  variant='soft-rounded' colorScheme='telegram'>
       <TabList>
         <Tab>Events</Tab>
         <Tab>Send Message</Tab>

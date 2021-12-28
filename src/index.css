@@ -6,6 +6,12 @@
 }
 .PhoneInputInput{
     padding: 4px;
-    outline: 2px solid rgb(122, 122, 122)!important;
+    outline: 2px solid #cec8c8;
     border-radius: 2px;
+}
+.PhoneInputCountrySelect{
+    padding: 3px;border-radius: 3px;
+    outline: 2px solid #cec8c8;
+
+    background-color: #FFFFFF;
 }

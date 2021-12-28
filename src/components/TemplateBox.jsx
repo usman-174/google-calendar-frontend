@@ -38,11 +38,11 @@ const TemplateBox = () => {
   };
 
   useEffect(() => {
-    const messageToSet = templatesList?.find(
+    const foundTemplates = templatesList?.find(
       (temp) => temp?.title === template
-    )?.message;
-    if (message && template && message !== messageToSet) {
-      setMessage(messageToSet);
+    );
+    if (!message || (message !== foundTemplates?.message)) {
+      setMessage(foundTemplates?.message);
     }
     if (!templatesList?.find((temp) => temp.id === templateId)) {
       setTemplate("");
@@ -51,7 +51,7 @@ const TemplateBox = () => {
     }
    
     // eslint-disable-next-line
-  }, [template, setTemplateId,templateId]);
+  }, [template, setTemplate,setTemplateId,templateId]);
 
   useEffect(() => {
     if (error && !isValidating && !templatesList) {
@@ -99,26 +99,31 @@ const TemplateBox = () => {
             Template
           </FormLabel>
           <Select
-            placeholder={
-              template ? `Selected "${template}"` : `Select a template`
+            placeholder={templatesList?.length ? 
+              template ? `Selected "${template}"` : `Select a template` : "No Templates available"
             }
             value={template}
             onChange={(e) => {
               if (!e.target.value) {
+                console.log("No Id found");
+
                 setMessage("");
                 return;
               }
               if (e.target.value === templateId) {
+                console.log("Again select same");
                 setTemplateId("");
                 setTemplate("");
                 return;
               }
               setTemplateById(e.target.value);
               setTemplateId(e.target.value);
+              console.log("Setting template Id and message by templateId");
+
             }}
             size={isLargerThan460 ? "md" : "sm"}
           >
-            {templatesList?.map((temp) => (
+            {(templatesList||[])?.map((temp) => (
               <option
                 value={temp.id}
                 className={temp.id}
@@ -166,6 +171,7 @@ const TemplateBox = () => {
           disabled={!template || !message || !phone}
           mx="auto"
           colorScheme={"teal"}
+          my="4"
           size={isLargerThan460 ? "md" : "sm"}
         >
           Send Message

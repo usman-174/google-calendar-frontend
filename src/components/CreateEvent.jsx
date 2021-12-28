@@ -192,7 +192,7 @@ function CreateEvent() {
             <Button variant="outline" disabled={isValidating} mr={3} onClick={onClose}>
               Cancel
             </Button>
-            <Button onClick={handleSubmit} isLoading={isValidating} colorScheme="teal">
+            <Button  onClick={handleSubmit} isLoading={isValidating} colorScheme="teal">
               Create
             </Button>
           </DrawerFooter>
