@@ -8,6 +8,7 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  FormHelperText,
   FormLabel,
   HStack,
   Input,
@@ -98,7 +99,7 @@ function CreateTemplate() {
     }
   };
   const AddtoList = () => {
-    setList([...list, tag]);
+    setList([...list, tag.replace(" ","_")]);
     setTag("");
   };
  
@@ -178,6 +179,7 @@ function CreateTemplate() {
               onChange={(e) => setTag(e.target.value)}
               placeholder="Type Keyword here..."
             />
+            <FormHelperText>Blank Spaces are not allowed</FormHelperText>
 
             <Button onClick={AddtoList} mx="3" mb="1" disabled={tag.length < 4}>
               Add

@@ -19,7 +19,7 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import CreateTemplate from "./CreateTemplate";
-import DeleteAlert from "./DeleteAlert";
+import DeleteAlert from "./CreateTemplate";
 import EditTemplate from "./EditTemplate";
 
 const TemplateBox = () => {
@@ -62,7 +62,7 @@ const TemplateBox = () => {
     }
 
     // eslint-disable-next-line
-  }, [template, setTemplate, setTemplateId, templateId]);
+  }, [template, setTemplate, setTemplateId, templateId,templatesList]);
 
   useEffect(() => {
     if (error && !isValidating && !templatesList) {

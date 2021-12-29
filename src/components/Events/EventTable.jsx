@@ -12,7 +12,7 @@ import axios from "axios";
 import React from "react";
 import Highlighter from "react-highlight-words";
 import { useSWRConfig } from "swr";
-import ShowKeywords from "./ShowKeywords";
+import ShowKeywords from "../layouts/ShowKeywords";
 
 const EventTable = ({ events, search }) => {
   const [isLargerThan460] = useMediaQuery("(min-width: 460px)");
@@ -126,28 +126,7 @@ const EventTable = ({ events, search }) => {
                       textToHighlight={(event.description.split(" || ")[1]).toUpperCase()}
                     />
                   ) : (
-                    // <HStack mx="auto" my="2" spacing={"10"} >
-                    //   {event.description
-                    //     .split(" || ")[1]
-                    //     .toUpperCase()
-                    //     .split(" ")
-                    //     .map((keyword) => (
-                    //       <Box  textAlign={"center"} key={keyword}>
-                    //         <Tag
-                    //           p="2"
-                    //           rounded={"md"}
-                    //           color={"MenuText"}
-                    //           size={"md"}
-                    //           variant="outline"
-                    //           colorScheme="teal"
-                    //         >
-                    //           <TagLabel>{keyword}</TagLabel>
-                    //           {/* <TagRightIcon as={MdSettings} /> */}
-                    //         </Tag>
-                    //       </Box>
-                    //     ))}
-                    //   )
-                    // </HStack>
+                    
                     <ShowKeywords description={event.description}/>
                   )}
                 </Flex>

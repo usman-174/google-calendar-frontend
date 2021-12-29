@@ -112,7 +112,7 @@ function EditTemplate({ templateId, setTemplate }) {
     }
   };
   const AddtoList = () => {
-    setList([...list, tag]);
+    setList([...list, tag.replace(" ","_")]);
     setTag("");
   };
   useEffect(() => {

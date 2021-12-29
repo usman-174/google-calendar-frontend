@@ -25,7 +25,7 @@ import { useEffect } from "react";
 import { useRef, useState } from "react";
 import PhoneInput from "react-phone-number-input";
 import useSWR from "swr";
-import useGetEvent from "../hooks/useGetEvents";
+import useGetEvent from "../../hooks/useGetEvents";
 
 function CreateEvent() {
   const { isValidating, mutate } = useGetEvent();

@@ -11,10 +11,11 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import useGetEvent from "../hooks/useGetEvents";
-import EventTable from "./EventTable";
-import FilterBox from "./FilterBox";
-import TemplateBox from "./TemplateBox";
-import CreateEvent from "./CreateEvent";
+import EventTable from "./Events/EventTable";
+import FilterBox from "./Events/FilterBox";
+import TemplateBox from "./Templates/TemplateBox";
+import CreateEvent from "./Events/CreateEvent";
+import EventList from "./Reminder/EventList";
 
 const IframeTabs = () => {
   const [isLargerThan460] = useMediaQuery("(min-width: 460px)");
@@ -102,6 +103,7 @@ const IframeTabs = () => {
       <TabList>
         <Tab>Events</Tab>
         <Tab>Send Message</Tab>
+        <Tab>Reminders</Tab>
       </TabList>
       <TabPanels>
         <TabPanel>
@@ -173,6 +175,9 @@ const IframeTabs = () => {
         </TabPanel>
         <TabPanel>
           <TemplateBox />
+        </TabPanel>
+        <TabPanel>
+       <EventList/>
         </TabPanel>
       </TabPanels>
     </Tabs>
