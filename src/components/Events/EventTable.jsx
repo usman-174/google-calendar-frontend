@@ -1,49 +1,52 @@
 import { CopyIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
   Box,
-  Flex, Text,
+  Flex,
+  Text,
   Tooltip,
   useMediaQuery,
   useToast,
   Wrap,
   WrapItem
 } from "@chakra-ui/react";
-import axios from "axios";
-import React from "react";
+import React, { useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-import { useSWRConfig } from "swr";
+// import { useSWRConfig } from "swr";
 import ShowKeywords from "../layouts/ShowKeywords";
+import DeleteEventAlter from "./DeleteEventAlert";
 
 const EventTable = ({ events, search }) => {
   const [isLargerThan460] = useMediaQuery("(min-width: 460px)");
   const [isLargerThan650] = useMediaQuery("(min-width: 650px)");
   const [isLargerThan950] = useMediaQuery("(min-width: 950px)");
+  const [isOpen, setIsOpen] = useState(false);
+  const cancelRef = useRef();
   const toast = useToast();
+  const onClose = () => setIsOpen(false);
 
-  const { mutate } = useSWRConfig();
 
-  const deleteEvent = async (id) => {
-    try {
-      const { data } = await axios.delete("/events/delete/" + id);
-      if (data?.success) {
-        toast({
-          title: "Event Deleted",
-          status: "success",
-          duration: 1500,
-          isClosable: true,
-        });
-        mutate("/events/all");
-        return;
-      }
-    } catch (error) {
-      toast({
-        title: error?.response?.data?.error || "Failed to delete the Event",
-        status: "error",
-        duration: 1600,
-        isClosable: true,
-      });
-    }
-  };
+  // const deleteEvent = async (id) => {
+  //   try {
+  //     const { data } = await axios.delete("/events/delete/" + id);
+  //     if (data?.success) {
+  //       toast({
+  //         title: "Event Deleted",
+  //         status: "success",
+  //         duration: 1500,
+  //         isClosable: true,
+  //       });
+  //       mutate("/events/all");
+  //       return;
+  //     }
+  //   } catch (error) {
+  //     toast({
+  //       title: error?.response?.data?.error || "Failed to delete the Event",
+  //       status: "error",
+  //       duration: 1600,
+  //       isClosable: true,
+  //     });
+  //   }
+  // };
 
   return (
     <Box mb="15">
@@ -82,13 +85,20 @@ const EventTable = ({ events, search }) => {
               >
                 <DeleteIcon
                   color="red.400"
-                  onClick={() => deleteEvent(event.id)}
+                  // onClick={() => deleteEvent(event.id)}
+                  onClick={() => setIsOpen(true)}
                   _hover={{ textColor: "red.600" }}
                   mx="12"
                   h="20px"
                   w="20px"
                   cursor={"pointer"}
                 />
+                <DeleteEventAlter
+                 onClose={onClose}
+                 isOpen={isOpen}
+                 eventId={event.id}
+                 cancelRef={cancelRef}
+               />
                 <Flex m="2" direction={"column"}>
                   <Text
                     textAlign={"left"}
@@ -123,11 +133,13 @@ const EventTable = ({ events, search }) => {
                     <Highlighter
                       searchWords={search.split(" ")}
                       autoEscape={true}
-                      textToHighlight={(event.description.split(" || ")[1]).toUpperCase()}
+                      textToHighlight={event.description
+                        .split(" || ")[1]
+                        .replace(" ", " , ")
+                        .toUpperCase()}
                     />
                   ) : (
-                    
-                    <ShowKeywords description={event.description}/>
+                    <ShowKeywords description={event.description} />
                   )}
                 </Flex>
                 <Flex m="2" direction="column">

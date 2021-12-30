@@ -23,7 +23,8 @@ import {
 import axios from "axios";
 import { useEffect } from "react";
 import { useRef, useState } from "react";
-import PhoneInput from "react-phone-number-input";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 import useSWR from "swr";
 import useGetEvent from "../../hooks/useGetEvents";
 
@@ -42,7 +43,6 @@ function CreateEvent() {
   const btnRef = useRef();
   const toast = useToast();
   const handleSubmit = async () => {
-    console.log("Lol");
     if (!description || !phone) {
       toast({
         title: "Please provide all details of the Event.",
@@ -86,7 +86,7 @@ function CreateEvent() {
 
     try {
       const { data } = await axios.post("/events/new", {
-        description:description + " ||"+wordString,
+        description: description + " ||" + wordString,
         summary: phone,
         startTime: startDate,
         endTime: endDate,
@@ -124,7 +124,11 @@ function CreateEvent() {
     }
   }, [setTemplate, setkeywords, templatesList, template, keywords]);
   return (
-    <Box my="5" ml={isLargerThan460 ? "56":null} mx={isLargerThan460 ? null:"auto"}>
+    <Box
+      my="5"
+      ml={isLargerThan460 ? "56" : null}
+      mx={isLargerThan460 ? null : "auto"}
+    >
       <Button
         mx={isLargerThan460 ? null : "auto"}
         my={isLargerThan460 ? "5" : "2"}
@@ -232,10 +236,7 @@ function CreateEvent() {
             </Select>
             <HStack spacing={4}>
               {keywords.map((word) => (
-                <div
-                    key={word}
-
-                >
+                <div key={word}>
                   <Tag
                     p="2"
                     m="2"
@@ -259,12 +260,14 @@ function CreateEvent() {
             >
               Phone No
             </FormLabel>
+            
             <PhoneInput
-              w={isLargerThan460 ? "sm" : "md"}
               value={phone}
-              defaultCountry="US"
-              onChange={setPhone}
-              placeholder="Type Phone Number here..."
+              placeholder="Enter formated phone number"
+              countryCodeEditable={true}
+              enableSearch={true}
+              onChange={(_,__, ___, formattedValue) => setPhone(formattedValue.replace("-",""))
+              }
             />
           </DrawerBody>
 

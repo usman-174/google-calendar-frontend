@@ -47,6 +47,7 @@ const DeleteAlert = ({
         duration: 1600,
         isClosable: true,
       });
+      onClose()
       return;
     }
   };

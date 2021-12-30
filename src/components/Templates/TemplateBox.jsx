@@ -16,19 +16,20 @@ import {
   useMediaQuery,
   useToast,
 } from "@chakra-ui/react";
+import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import CreateTemplate from "./CreateTemplate";
-import DeleteAlert from "./CreateTemplate";
+import DeleteAlert from "./DeleteAlert";
 import EditTemplate from "./EditTemplate";
 
 const TemplateBox = () => {
   const { data: templatesList, isValidating, error } = useSWR("/templates/all");
   const [isLargerThan460] = useMediaQuery("(min-width: 460px)");
+  const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = useRef();
   const toast = useToast();
-  const [isOpen, setIsOpen] = useState(false);
 
   const [template, setTemplate] = useState("");
   const [templateId, setTemplateId] = useState("");
@@ -40,7 +41,30 @@ const TemplateBox = () => {
     const temp = templatesList?.find((temp) => temp.id === id);
     setTemplate(temp?.title || "");
   };
-
+  const handleSentMessage = async()=>{
+    try {
+        const {data} =await axios.post("/message/",{
+          number:phone,message
+        })
+        if(data?.message){
+          toast({
+            title: data.message || "Message Sent",
+            status: "success",
+            duration: 1500,
+            isClosable: true,
+          });
+          return
+        }
+    } catch (error) {
+      toast({
+        title: error?.response.data.error || "Failed to send message.",
+        status: "error",
+        duration: 1700,
+        isClosable: true,
+      });
+      return
+    }
+  }
   useEffect(() => {
     const foundTemplates = templatesList?.find(
       (temp) => temp?.title === template
@@ -201,6 +225,7 @@ const TemplateBox = () => {
           mx="auto"
           colorScheme={"teal"}
           my="4"
+          onClick={handleSentMessage}
           size={isLargerThan460 ? "md" : "sm"}
         >
           Send Message

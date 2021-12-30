@@ -134,11 +134,11 @@ const IframeTabs = () => {
             setStartDate={setStartDate}
           />
           <CreateEvent />
-          {isValidating && !data ? (
+          {isValidating  ? (
             <Center w="100%">
               <Spinner mx="auto" mt="10" size="xl" />;
             </Center>
-          ) : data?.items?.length ? (
+          ) : (!isValidating && data?.items?.length) ? (
             <Box >
               {/* EVENT BOX */}
               <EventTable events={data.items} search={search} />

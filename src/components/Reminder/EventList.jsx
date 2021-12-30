@@ -1,6 +1,6 @@
-import { Box, Center, Heading, Spinner, useMediaQuery } from "@chakra-ui/react";
+import { Box, Button, Center, Heading, Spinner, useMediaQuery } from "@chakra-ui/react";
 import { DataGrid } from "@material-ui/data-grid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useGetEvent from "../../hooks/useGetEvents";
 
 const EventList = () => {
@@ -10,91 +10,101 @@ const EventList = () => {
   const { isValidating, data } = useGetEvent();
   const [selectedItems, setSelectedItems] = useState([]);
   const columns = [
-    { field: "id", headerName: "ID", align: "center", width: 200 },
+    { field: "id", headerName: "ID", align: "left", width: 150 },
     {
       field: "phone",
       headerName: "Phone Number",
-      width: 300,
-      align: "right",
+      width: 140,
+      align: "left",
+    },
+    {
+      field: "keywords",
+      headerName: "Keywords",
+      width: 230,
+      sortable: false,
+
+      align: "left",
     },
 
     {
       field: "description",
       headerName: "Description",
-      sortable: false,
-      align: "right",
-      width: 500,
+      align: "center",
+      width: 520,
     },
     {
       field: "startTime",
       headerName: "Starting Time",
-      sortable: false,
       align: "center",
-      width: 220,
+      width: 204,
+    },
+    {
+      field: "endTime",
+      headerName: "Ending Time",
+      sortable: true,
+      align: "center",
+      width: 204,
     },
   ];
 
   const rows = data?.items?.map((event) => ({
     id: event?.id,
     phone: event?.summary,
-    firstName: "Jon",
-    age: 35,
+    keywords: event?.description
+      .split(" || ")[1]
+      .replace(" ", " , ")
+      .toUpperCase(),
     description: event?.description.split(" || ")[0],
-    startTime:
-      new Date(event.start?.dateTime).toDateString() +
-      "at" +
-      new Date(event.start?.dateTime).toLocaleString("en-US", {
-        hour: "numeric",
-        minute: "numeric",
-        hour12: true,
-      }),
+    startTime: new Date(event.start?.dateTime).toLocaleString(),
+    endTime: new Date(event.end?.dateTime).toLocaleString(),
   }));
   const handlerowSelect = (ids) => {
-    setSelectedItems([])
+    setSelectedItems([]);
     let foundItem;
-    let items = []
+    let items = [];
     ids.forEach((idx) => {
       foundItem = data?.items?.find(({ id }) => id === idx);
-      items.push(foundItem)
+      items.push(foundItem);
       setSelectedItems(items);
     });
   };
 
   //   IF LOADING
-  if (isValidating) {
-    <Center w="100%">
-      <Spinner mx="auto" mt="10" size="xl" />;
-    </Center>;
-  }
+  useEffect(()=>{
+    setSelectedItems([])
+  },[])
   return (
     <Box m={isLargerThan460 ? "5" : "0"} p="1">
-      {data?.items ? (
-        <>
-          {" "}
-          <Heading my="4" textAlign={"center"} color={"teal.700"}>
-            Event List
-          </Heading>
-          {JSON.stringify(selectedItems)}
-          <Box
-            mx="auto"
-            bg="gray.50"
-            h={isLargerThan800 ? "40vw" : isLargerThan460 ? "75vw" : "90vw"}
-          >
-            <DataGrid
-              rows={rows}
-              columns={columns}
-              pageSize={10}
-              onSelectionModelChange={handlerowSelect}
-              checkboxSelection
-              rowsPerPageOptions={[10, 15, 20, 25]}
-              disableSelectionOnClick
-            />
-          </Box>
-        </>
+      <Heading my="6" textAlign={"center"} color={"teal.700"}>
+        Event List
+      </Heading>
+      <Button my="5" mx="4" disabled={!selectedItems.length 
+      } colorScheme={"facebook"}>Send Reminders</Button>
+      {isValidating ? (
+        <Center w="100%">
+          <Spinner mx="auto" mt="12" size="xl" />;
+        </Center>
+      ) : 
+      (!isValidating && data?.items?.length) ? (
+        <Box
+          mx="auto"
+          bg="gray.50"
+          h={isLargerThan800 ? "30vw" : isLargerThan460 ? "75vw" : "90vw"}
+        >
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            pageSize={10}
+            onSelectionModelChange={handlerowSelect}
+            checkboxSelection
+            rowsPerPageOptions={[10, 15, 20, 25]}
+            disableSelectionOnClick
+          />
+        </Box>
       ) : (
         <Center w="100%">
-          <Heading m="5" size={"sm"}>
-            {" "}
+          <Heading m="8" size={"sm"}>
+           
             No Events
           </Heading>
         </Center>
