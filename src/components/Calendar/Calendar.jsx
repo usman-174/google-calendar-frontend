@@ -13,8 +13,8 @@ const Calendar = () => {
           border: "solid 2px #307",
           margin: "0 auto",
           marginTop:"15px",
-          width: isLargerThan510 ? "70vw" : "90vw",
-          height: isLargerThan510 ? "28vw" : "50vw",
+          width: isLargerThan510 ? "62vw" : "90vw",
+          height: isLargerThan510 ? "24vw" : "45vw",
         }}
         frameBorder="0"
         title='Calendar'

@@ -28,7 +28,7 @@ ReactDOM.render(
     <SWRConfig 
       value={{
         revalidateOnFocus:false,
-        refreshInterval: 300000,
+        refreshInterval: 600000,
         shouldRetryOnError:false,
         fetcher
       }}

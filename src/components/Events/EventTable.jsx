@@ -7,12 +7,12 @@ import {
   useMediaQuery,
   useToast,
   Wrap,
-  WrapItem
+  WrapItem,
 } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-// import { useSWRConfig } from "swr";
 import ShowKeywords from "../layouts/ShowKeywords";
+import ReadMoreReact from "read-more-react";
 import DeleteEventAlter from "./DeleteEventAlert";
 
 const EventTable = ({ events, search }) => {
@@ -23,30 +23,6 @@ const EventTable = ({ events, search }) => {
   const cancelRef = useRef();
   const toast = useToast();
   const onClose = () => setIsOpen(false);
-
-
-  // const deleteEvent = async (id) => {
-  //   try {
-  //     const { data } = await axios.delete("/events/delete/" + id);
-  //     if (data?.success) {
-  //       toast({
-  //         title: "Event Deleted",
-  //         status: "success",
-  //         duration: 1500,
-  //         isClosable: true,
-  //       });
-  //       mutate("/events/all");
-  //       return;
-  //     }
-  //   } catch (error) {
-  //     toast({
-  //       title: error?.response?.data?.error || "Failed to delete the Event",
-  //       status: "error",
-  //       duration: 1600,
-  //       isClosable: true,
-  //     });
-  //   }
-  // };
 
   return (
     <Box mb="15">
@@ -94,12 +70,12 @@ const EventTable = ({ events, search }) => {
                   cursor={"pointer"}
                 />
                 <DeleteEventAlter
-                 onClose={onClose}
-                 isOpen={isOpen}
-                 eventId={event.id}
-                 cancelRef={cancelRef}
-               />
-                <Flex m="2" direction={"column"}>
+                  onClose={onClose}
+                  isOpen={isOpen}
+                  eventId={event.id}
+                  cancelRef={cancelRef}
+                />
+                {/* <Flex m="2" direction={"column"}>
                   <Text
                     textAlign={"left"}
                     fontSize={"xs"}
@@ -119,30 +95,8 @@ const EventTable = ({ events, search }) => {
                       event.id
                     )}
                   </Text>
-                </Flex>
-                <Flex m="2" direction={"column"}>
-                  <Text
-                    textAlign={"left"}
-                    fontSize={"xs"}
-                    fontWeight={"bold"}
-                    color="black"
-                  >
-                    Keywords :
-                  </Text>
-                  {search ? (
-                    <Highlighter
-                      searchWords={search.split(" ")}
-                      autoEscape={true}
-                      textToHighlight={event.description
-                        .split(" || ")[1]
-                        .replace(" ", " , ")
-                        .toUpperCase()}
-                    />
-                  ) : (
-                    <ShowKeywords description={event.description} />
-                  )}
-                </Flex>
-                <Flex m="2" direction="column">
+                </Flex> */}
+                 <Flex m="2" direction="column">
                   <Text
                     textAlign={"left"}
                     fontSize={"xs"}
@@ -180,6 +134,29 @@ const EventTable = ({ events, search }) => {
                     </Tooltip>
                   </Text>
                 </Flex>
+                <Flex m="2" direction={"column"}>
+                  <Text
+                    textAlign={"left"}
+                    fontSize={"xs"}
+                    fontWeight={"bold"}
+                    color="black"
+                  >
+                    Keywords :
+                  </Text>
+                  {search ? (
+                    <Highlighter
+                      searchWords={search.split(" ")}
+                      autoEscape={true}
+                      textToHighlight={event.description
+                        .split(" || ")[1]
+                        .replace(" ", " , ")
+                        .toUpperCase()}
+                    />
+                  ) : (
+                    <ShowKeywords description={event.description} />
+                  )}
+                </Flex>
+               
                 <Flex m="2" direction="column">
                   <Text
                     textAlign={"left"}
@@ -197,13 +174,28 @@ const EventTable = ({ events, search }) => {
                         textToHighlight={event.description.split(" || ")[0]}
                       />
                     ) : (
-                      `${event.description.split(" || ")[0]}`
+                      <ReadMoreReact
+                        text={
+                          event.description.split(" || ")[0]
+                        }
+                        min={80}
+                        max={500}
+                        readMoreText={
+                          <Text
+                            textColor={"blue.400"}
+                            fontSize={"sm"}
+                            cursor={"pointer"}
+                          >
+                            read more...
+                          </Text>
+                        }
+                      />
                     )}
                   </Text>
                 </Flex>
 
                 <Flex
-                  mt="10"
+                  mt="4"
                   flexDirection={"row"}
                   justify={"space-around"}
                   alignItems={"end"}

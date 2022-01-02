@@ -3,7 +3,7 @@ import React from 'react'
 
 const ShowKeywords = ({description}) => {
     return (
-        <HStack mx="auto" my="2" spacing={"10"} >
+        <HStack mx="auto" spacing={"5"} >
         {description
           .split(" || ")[1]
           .toUpperCase()
@@ -14,7 +14,7 @@ const ShowKeywords = ({description}) => {
                 p="2"
                 rounded={"md"}
                 color={"MenuText"}
-                size={"md"}
+                size={"sm"}
                 variant="outline"
                 colorScheme="teal"
               >

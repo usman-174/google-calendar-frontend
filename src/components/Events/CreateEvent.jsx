@@ -125,7 +125,7 @@ function CreateEvent() {
   }, [setTemplate, setkeywords, templatesList, template, keywords]);
   return (
     <Box
-      my="5"
+      my="1"
       ml={isLargerThan460 ? "56" : null}
       mx={isLargerThan460 ? null : "auto"}
     >
@@ -133,7 +133,7 @@ function CreateEvent() {
         mx={isLargerThan460 ? null : "auto"}
         my={isLargerThan460 ? "5" : "2"}
         variant={"outline"}
-        p="6"
+        p="2"
         disabled={isValidating}
         colorScheme={"twitter"}
         textAlign={isLargerThan460 ? "center" : "left"}
@@ -155,15 +155,15 @@ function CreateEvent() {
           <DrawerHeader
             mx="auto"
             textTransform={"uppercase"}
-            fontSize={isLargerThan460 ? "xl" : "lg"}
+            fontSize={isLargerThan460 ? "2xl" : "xl"}
           >
             Create an Event
           </DrawerHeader>
 
           <DrawerBody>
             <FormLabel
-              fontWeight={"semibold"}
-              fontSize={isLargerThan460 ? "lg" : "md"}
+              
+              fontSize={isLargerThan460 ? "md" : "sm"}
             >
               From
             </FormLabel>
@@ -171,13 +171,14 @@ function CreateEvent() {
             <Input
               type="datetime-local"
               name="endDate"
-              w={isLargerThan460 ? "sm" : "md"}
+              
+              w={"sm"}
               onChange={(e) => setStartDate(e.target.value)}
               value={startDate}
             />
             <FormLabel
-              fontWeight={"semibold"}
-              fontSize={isLargerThan460 ? "lg" : "md"}
+              
+              fontSize={isLargerThan460 ? "md" : "sm"}
             >
               To
             </FormLabel>
@@ -185,13 +186,14 @@ function CreateEvent() {
             <Input
               type="datetime-local"
               name="endDate"
-              w={isLargerThan460 ? "sm" : "md"}
+              w={"sm"}
+        
               onChange={(e) => setEndDate(e.target.value)}
               value={endDate}
             />
             <FormLabel
-              fontWeight={"semibold"}
-              fontSize={isLargerThan460 ? "lg" : "md"}
+              
+              fontSize={isLargerThan460 ? "md" : "sm"}
             >
               Description
             </FormLabel>
@@ -207,8 +209,8 @@ function CreateEvent() {
               </Text>
             )}
             <FormLabel
-              fontWeight={"semibold"}
-              fontSize={isLargerThan460 ? "lg" : "md"}
+              
+              fontSize={isLargerThan460 ? "md" : "sm"}
             >
               Set Keywords
             </FormLabel>
@@ -218,7 +220,7 @@ function CreateEvent() {
               onChange={(e) => {
                 setTemplate(e.target.value);
               }}
-              size={isLargerThan460 ? "md" : "sm"}
+             w="50%"
             >
               {templatesList?.map((temp) => (
                 <option
@@ -255,8 +257,8 @@ function CreateEvent() {
             </HStack>
             <FormLabel
               my="2"
-              fontWeight={"semibold"}
-              fontSize={isLargerThan460 ? "lg" : "md"}
+              
+              fontSize={isLargerThan460 ? "md" : "sm"}
             >
               Phone No
             </FormLabel>

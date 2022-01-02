@@ -65,7 +65,8 @@ function CreateTemplate() {
     try {
       const { data } = await axios.post("/templates/new", {
         title,
-        message,keywords:list
+        message,
+        keywords: list,
       });
       if (data?.error) {
         toast({
@@ -99,17 +100,16 @@ function CreateTemplate() {
     }
   };
   const AddtoList = () => {
-    setList([...list, tag.replace(" ","_")]);
+    setList([...list, tag.replace(" ", "_")]);
     setTag("");
   };
- 
+
   return (
     <Box my="4">
       <Text
         color="red.500"
         textAlign={"center"}
         cursor={"pointer"}
-        fontWeight={"semibold"}
         ref={btnRef}
         onClick={onOpen}
         fontSize={isLargerThan460 ? "md" : "xs"}
@@ -130,16 +130,13 @@ function CreateTemplate() {
           <DrawerHeader
             mx="auto"
             textTransform={"uppercase"}
-            fontSize={isLargerThan460 ? "xl" : "lg"}
+            fontSize={isLargerThan460 ? "2xl" : "xl"}
           >
             Add a Template
           </DrawerHeader>
 
           <DrawerBody>
-            <FormLabel
-              fontWeight={"semibold"}
-              fontSize={isLargerThan460 ? "lg" : "md"}
-            >
+            <FormLabel fontSize={isLargerThan460 ? "md" : "sm"}>
               Title
             </FormLabel>
             <Input
@@ -147,11 +144,7 @@ function CreateTemplate() {
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Type Title here..."
             />
-            <FormLabel
-              my="2"
-              fontWeight={"semibold"}
-              fontSize={isLargerThan460 ? "lg" : "md"}
-            >
+            <FormLabel my="2" fontSize={isLargerThan460 ? "md" : "sm"}>
               Message
             </FormLabel>
             <Textarea
@@ -166,36 +159,48 @@ function CreateTemplate() {
                 Atleast {30 - message.length} more words{" "}
               </Text>
             )}
-            <FormLabel
-              fontWeight={"semibold"}
-              fontSize={isLargerThan460 ? "lg" : "md"}
-            >
+            {/* KEYWORDS */}
+            <FormLabel fontSize={isLargerThan460 ? "md" : "sm"}>
               Keywords
             </FormLabel>
             <Input
-            name="tag"
+              name="tag"
               w="60%"
               value={tag}
               onChange={(e) => setTag(e.target.value)}
               placeholder="Type Keyword here..."
-            />
-            <FormHelperText>Blank Spaces are not allowed</FormHelperText>
-
-            <Button onClick={AddtoList} mx="3" mb="1" disabled={tag.length < 4}>
+            />{" "}
+            <Button
+              fontSize={"sm"}
+              onClick={AddtoList}
+              mx="2"
+              mb="1"
+              disabled={tag.length < 4}
+            >
               Add
             </Button>
-           
-          <HStack spacing={4} my="3">{list?.map((keyword)=>
-              
-              <Tag mx="2" variant="outline" size="lg"  key={keyword}  colorScheme="blue">
-                <TagLabel>{keyword}</TagLabel>
-                <TagRightIcon onClick={()=>{
-                  
-                    const filtered = list.filter((word)=>word!==keyword)
-                    return setList(filtered)
-                  
-                }}_hover={{color:"red"}} cursor={"pointer"} as={DeleteIcon} />
-              </Tag>)}
+            <FormHelperText>Blank Spaces are not allowed</FormHelperText>
+            <HStack spacing={4} my="3">
+              {list?.map((keyword) => (
+                <Tag
+                  mx="2"
+                  variant="outline"
+                  size="lg"
+                  key={keyword}
+                  colorScheme="blue"
+                >
+                  <TagLabel>{keyword}</TagLabel>
+                  <TagRightIcon
+                    onClick={() => {
+                      const filtered = list.filter((word) => word !== keyword);
+                      return setList(filtered);
+                    }}
+                    _hover={{ color: "red" }}
+                    cursor={"pointer"}
+                    as={DeleteIcon}
+                  />
+                </Tag>
+              ))}
             </HStack>
           </DrawerBody>
           <DrawerFooter>

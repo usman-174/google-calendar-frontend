@@ -4,9 +4,7 @@ import {
   Button,
   Center,
   FormControl,
-  FormLabel,
-  Heading,
-  HStack,
+  FormLabel, HStack,
   Input,
   Select,
   Spinner,
@@ -14,7 +12,7 @@ import {
   TagLabel,
   Textarea,
   useMediaQuery,
-  useToast,
+  useToast
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
@@ -108,20 +106,20 @@ const TemplateBox = () => {
     );
   }
   return (
-    <Box shadow={"sm"} mt="5" rounded={"sm"}>
-      <Heading
-        my={isLargerThan460 ? "8" : 2}
+    <Box shadow={"sm"} mt="8" rounded={"sm"}>
+      {/* <Heading
+        my="5"
         size={isLargerThan460 ? "lg" : "md"}
         textColor={"teal.800"}
         textAlign={"center"}
       >
         Send Message
-      </Heading>
+      </Heading> */}
       <Box
         spacing={isLargerThan460 ? "10px" : "5px"}
         mx={"auto"}
         mb={isLargerThan460 ? null : "30px"}
-        w={isLargerThan460 ? "80%" : "full"}
+        w={isLargerThan460 ? "60%" : "90%"}
         p="2"
         textAlign={"center"}
       >

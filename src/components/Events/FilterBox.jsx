@@ -26,8 +26,9 @@ const FilterBox = ({
         align={"center"}
         justify={"center"}
         flexDirection={isLargerThan460 ? "row" : "column"}
-        my={isLargerThan460 ? "4" : "0"}
+        mt={isLargerThan460 ? "3" : "0"}
       >
+        {/* FROM INPUT */}
         <Flex
           mx={isLargerThan460 ? "5" : "0"}
           align={"center"}
@@ -36,6 +37,7 @@ const FilterBox = ({
           <Input
             type="datetime-local"
             name="startDate"
+            w={isLargerThan460 ?null:"70vw"}
             onChange={(e) => {
               if (!e.target.value && !endDate) {
                 setFilter(false);
@@ -45,6 +47,7 @@ const FilterBox = ({
             value={startDate}
           />
         </Flex>
+        {/* TO INPUT */}
         <Flex
           mx={isLargerThan460 ? "5" : "0"}
           my={isLargerThan460 ? "0" : "3"}
@@ -56,6 +59,8 @@ const FilterBox = ({
           <Input
             type="datetime-local"
             name="endDate"
+            w={isLargerThan460 ?null:"70vw"}
+
             onChange={(e) => {
               if (!e.target.value && !startDate) {
                 setFilter(false);
@@ -65,11 +70,12 @@ const FilterBox = ({
             value={endDate}
           />
         </Flex>
+        {/* APPLy BUTTON */}
         <Box>
           <Button
             disabled={(!endDate && !startDate) || search}
             onClick={filterEvents}
-            size={isLargerThan460 ? "md" : "sm"}
+            p={isLargerThan460 ? "3" : "1"}
             variant={"solid"}
             colorScheme={"teal"}
           >
@@ -77,6 +83,7 @@ const FilterBox = ({
           </Button>
         </Box>
 
+{/* RESET FILET BUTTON */}
         {!search  && filter && (
           <Box m="2">
             <Text

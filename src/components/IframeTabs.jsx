@@ -1,8 +1,7 @@
 import {
   Box,
   Button,
-  Center,
-  Heading, Input, Spinner, Tab,
+  Center, Input, Spinner, Tab,
   TabList,
   TabPanel,
   TabPanels, Tabs, useMediaQuery,
@@ -11,11 +10,11 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import useGetEvent from "../hooks/useGetEvents";
+import CreateEvent from "./Events/CreateEvent";
 import EventTable from "./Events/EventTable";
 import FilterBox from "./Events/FilterBox";
-import TemplateBox from "./Templates/TemplateBox";
-import CreateEvent from "./Events/CreateEvent";
 import EventList from "./Reminder/EventList";
+import TemplateBox from "./Templates/TemplateBox";
 
 const IframeTabs = () => {
   const [isLargerThan460] = useMediaQuery("(min-width: 460px)");
@@ -107,17 +106,17 @@ const IframeTabs = () => {
       </TabList>
       <TabPanels>
         <TabPanel>
-          <Heading
+          {/* <Heading
             my="5"
             textAlign={"center"}
             size={isLargerThan460 ? "lg" : "md"}
             textColor={"teal.800"}
           >
             EVENTS
-          </Heading>
+          </Heading> */}
           <Center>
 
-          <Input  my="2" p="4" w="md"
+          <Input  mt="8" p="3" w="sm"
           disabled={endDate||startDate||filter}
           type="text" placeholder="Search Here...."  value={search} onChange={(e)=>setSearch(e.target.value)}/>
           
@@ -133,8 +132,10 @@ const IframeTabs = () => {
             setFilter={setFilter}
             setStartDate={setStartDate}
           />
+          {/* CREATE EVENT */}
           <CreateEvent />
           {isValidating  ? (
+            // LOADING SPINNER
             <Center w="100%">
               <Spinner mx="auto" mt="10" size="xl" />;
             </Center>
@@ -173,10 +174,12 @@ const IframeTabs = () => {
           {/* EVENT BOX END */}
           {/* ------------------------------- */}
         </TabPanel>
-        <TabPanel>
+        <TabPanel >
+          {/* CREATE TEMPLATE */}
           <TemplateBox />
         </TabPanel>
         <TabPanel>
+          {/* EVENT LIST TABLE REMINDERS */}
        <EventList/>
         </TabPanel>
       </TabPanels>
