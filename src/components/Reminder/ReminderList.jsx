@@ -50,6 +50,7 @@ const EventList = ({ data, isValidating, mutate }) => {
       setSelectedItems(rows);
       return;
     } else if (e.target.value === "all" && !e.target.checked) {
+      console.log("resetAll");
       setSelectedItems([]);
       return;
     }
@@ -57,6 +58,7 @@ const EventList = ({ data, isValidating, mutate }) => {
     const found = selectedItems.find((x) => x.id === value.id);
     if (e.target.checked) {
       if (found) {
+        console.log("Fk eyea");
       } else {
         const data = [...selectedItems, value];
 
@@ -114,14 +116,14 @@ const EventList = ({ data, isValidating, mutate }) => {
           <Spinner mx="auto" mt="12" size="xl" />;
         </Center>
       ) : !isValidating && data?.items?.length ? (
-        <Box my="8" p="1" maxW={"100%"} overflowX={"auto"}>
+        <Box my="8" p="1" overflowX={"auto"}>
           <Table
-            size={isLargerThan460 ? "md" : "sm"}
-            colorScheme="teal"
+            size={"sm"}
+            colorScheme="facebook"
             mx="auto"
-            w="98%"
+           
           >
-            <TableCaption fontWeight={"semibold"}>
+            <TableCaption color={"telegram.400"} fontWeight={"bold"}>
               SELECT EVENTS TO SEND REMINDERS
             </TableCaption>
 
@@ -129,7 +131,6 @@ const EventList = ({ data, isValidating, mutate }) => {
               <Tr>
                 <Th textAlign={"center"}>
                   <Flex align={"center"} justify={"space-between"}>
-                    <Text>Checked </Text>
                     <Checkbox
                       colorScheme={"teal"}
                       isChecked={
@@ -141,7 +142,7 @@ const EventList = ({ data, isValidating, mutate }) => {
                     />
                   </Flex>
                 </Th>
-                <Th textAlign={"center"}>Keywords</Th>
+                <Th textAlign={"center"} >Keywords</Th>
                 <Th textAlign={"center"}>Phone No</Th>
                 <Th textAlign={"center"}>Description</Th>
                 <Th textAlign={"center"}>Start Time</Th>
@@ -151,20 +152,20 @@ const EventList = ({ data, isValidating, mutate }) => {
             <Tbody>
               {rows.map((row, i) => (
                 <Tr key={row.id}>
-                  <Td>
+                  <Td  >
                     <Flex align={"center"} justify={"space-between"}>
-                      <Text>{i + 1}</Text>
+                      <Text mx="2">{i + 1}</Text>
                       <Checkbox
                         colorScheme={"green"}
-                        isChecked={selectedItems.find((x) => x.id === row.id)}
+                        isChecked={selectedItems.find((x) => x.id === row.id)?true:false}
                         value={JSON.stringify(row)}
                         onChange={onCheckBoxChange}
                       />
                     </Flex>
                   </Td>
-                  <Td>{row.keywords}</Td>
-                  <Td>{row.phone}</Td>
-                  <Td>
+                  <Td  textAlign={"center"} fontSize={"sm"}>{row.keywords}</Td>
+                  <Td  textAlign={"center"}>{row.phone.replace(" ","")}</Td>
+                  <Td maxWidth={"36vw"} fontSize={"sm"}>
                     <ShowMoreText
                       lines={3}
                       more="Read more"
@@ -185,19 +186,7 @@ const EventList = ({ data, isValidating, mutate }) => {
             <Tfoot>
               <Tr>
                 <Th textAlign={"center"}>
-                  {" "}
-                  <Flex align={"center"} justify={"space-between"}>
-                    <Text>Checked </Text>
-                    <Checkbox
-                      colorScheme={"teal"}
-                      isChecked={
-                        JSON.stringify(selectedItems) === JSON.stringify(rows)
-                      }
-                      value={"all"}
-                      mx="1"
-                      onChange={onCheckBoxChange}
-                    />
-                  </Flex>
+                  
                 </Th>
 
                 <Th textAlign={"center"}>Keywords</Th>

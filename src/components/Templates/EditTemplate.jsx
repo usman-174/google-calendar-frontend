@@ -16,6 +16,7 @@ import {
   TagLabel,
   TagRightIcon,
   Textarea,
+  Tooltip,
   useDisclosure,
   useMediaQuery,
   useToast,
@@ -127,6 +128,7 @@ function EditTemplate({ templateId, setTemplate }) {
   }, [templatesList, setTemplate, templateId]);
   return (
     <>
+            <Tooltip hasArrow label='Edit Template'>
       <EditIcon
         display={"inline-block"}
         color="steelblue"
@@ -134,11 +136,12 @@ function EditTemplate({ templateId, setTemplate }) {
         ref={btnRef}
         onClick={onOpen}
         mx="5"
-       
+        
         h="40px"
         w="40px"
         cursor={"pointer"}
-      />
+        />
+        </Tooltip>
 
       <Box my="5">
         <Drawer
@@ -154,15 +157,15 @@ function EditTemplate({ templateId, setTemplate }) {
             <DrawerHeader
               mx="auto"
               textTransform={"uppercase"}
-              fontSize={isLargerThan460 ? "xl" : "lg"}
+              fontSize={isLargerThan460 ? "2xl" : "xl"}
             >
               Edit Template
             </DrawerHeader>
 
             <DrawerBody>
               <FormLabel
-                fontWeight={"semibold"}
-                fontSize={isLargerThan460 ? "lg" : "md"}
+               
+                fontSize={isLargerThan460 ? "md" : "sm"}
               >
                 Title
               </FormLabel>
@@ -173,8 +176,8 @@ function EditTemplate({ templateId, setTemplate }) {
               />
               <FormLabel
                 my="2"
-                fontWeight={"semibold"}
-                fontSize={isLargerThan460 ? "lg" : "md"}
+               
+                fontSize={isLargerThan460 ? "md" : "sm"}
               >
                 Message
               </FormLabel>
@@ -185,14 +188,14 @@ function EditTemplate({ templateId, setTemplate }) {
                 placeholder="Type Message here..."
               />
               <FormLabel
-                fontWeight={"semibold"}
-                fontSize={isLargerThan460 ? "lg" : "md"}
+               
+                fontSize={isLargerThan460 ? "md" : "sm"}
               >
                 Keywords
               </FormLabel>
               <Input
                 name="tag"
-                w="60%"
+                w={"50%"}
                 value={tag}
                 onChange={(e) => setTag(e.target.value)}
                 placeholder="Type Keyword here..."
@@ -200,8 +203,9 @@ function EditTemplate({ templateId, setTemplate }) {
 
               <Button
                 onClick={AddtoList}
-                mx="3"
-                mb="1"
+                fontSize={"sm"}
+                m="2"
+  
                 disabled={tag.length < 4}
               >
                 Add

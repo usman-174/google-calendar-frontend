@@ -11,6 +11,7 @@ import {
   Tag,
   TagLabel,
   Textarea,
+  Tooltip,
   useMediaQuery,
   useToast
 } from "@chakra-ui/react";
@@ -107,14 +108,6 @@ const TemplateBox = () => {
   }
   return (
     <Box shadow={"sm"} mt="8" rounded={"sm"}>
-      {/* <Heading
-        my="5"
-        size={isLargerThan460 ? "lg" : "md"}
-        textColor={"teal.800"}
-        textAlign={"center"}
-      >
-        Send Message
-      </Heading> */}
       <Box
         spacing={isLargerThan460 ? "10px" : "5px"}
         mx={"auto"}
@@ -179,7 +172,7 @@ const TemplateBox = () => {
                 m="2"
                 rounded={"md"}
                 color={"MenuText"}
-                size={"ls"}
+                size={isLargerThan460?"md":"sm"}
                 variant="outline"
                 colorScheme="teal"
               >
@@ -196,7 +189,7 @@ const TemplateBox = () => {
             Message
           </FormLabel>
           <Textarea
-            size={"lg"}
+            size={isLargerThan460?"lg":"md"}
             value={message}
             disabled={!template}
             onChange={(e) => {
@@ -212,6 +205,7 @@ const TemplateBox = () => {
           <Input
             type="tel"
             value={phone}
+
             disabled={!template}
             onChange={(e) => setPhone(e.target.value)}
           />
@@ -224,7 +218,7 @@ const TemplateBox = () => {
           colorScheme={"teal"}
           my="4"
           onClick={handleSentMessage}
-          size={isLargerThan460 ? "md" : "sm"}
+          size={isLargerThan460 ? "sm" : "xs"}
         >
           Send Message
         </Button>
@@ -235,6 +229,8 @@ const TemplateBox = () => {
         {/* Delete Template */}
         {template.length && templateId ? (
           <>
+            <Tooltip hasArrow label='Delete Template'>
+              
             <DeleteIcon
               display={"inline-block"}
               color="red.400"
@@ -244,9 +240,10 @@ const TemplateBox = () => {
               h="40px"
               w="40px"
               cursor={"pointer"}
-            />
+              />
+              </Tooltip>
 
-            <EditTemplate templateId={templateId} setTemplate={setTemplate} />
+            <EditTemplate  templateId={templateId} setTemplate={setTemplate} />
             <DeleteAlert
               onClose={onClose}
               isOpen={isOpen}

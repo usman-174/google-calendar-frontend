@@ -107,7 +107,7 @@ const IframeTabs = () => {
   }, [filter]);
 
   return (
-    <Tabs mt="5" isFitted variant="enclosed-colored" colorScheme="telegram">
+    <Tabs mt="5" isFitted variant="enclosed-colored" colorScheme="linkedin">
       <TabList>
         <Tab>Events</Tab>
         <Tab>Send Message</Tab>

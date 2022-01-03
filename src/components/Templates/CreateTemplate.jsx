@@ -119,9 +119,9 @@ function CreateTemplate() {
       </Text>
       <Drawer
         isOpen={isOpen}
-        size={isLargerThan460 ? "lg" : "md"}
         placement="right"
         onClose={onClose}
+        size={isLargerThan460 ? "lg" : "md"}
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
@@ -165,7 +165,7 @@ function CreateTemplate() {
             </FormLabel>
             <Input
               name="tag"
-              w="60%"
+              w={"50%"}
               value={tag}
               onChange={(e) => setTag(e.target.value)}
               placeholder="Type Keyword here..."
@@ -173,8 +173,7 @@ function CreateTemplate() {
             <Button
               fontSize={"sm"}
               onClick={AddtoList}
-              mx="2"
-              mb="1"
+              m="2"
               disabled={tag.length < 4}
             >
               Add
