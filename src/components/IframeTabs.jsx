@@ -2,9 +2,7 @@ import {
   Box,
   Button,
   Center,
-  Flex,
-  FormControl,
-  FormLabel,
+  Flex, FormLabel,
   Input,
   Spinner,
   Switch,
@@ -14,7 +12,7 @@ import {
   TabPanels,
   Tabs,
   useMediaQuery,
-  useToast,
+  useToast
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -22,7 +20,7 @@ import useGetEvent from "../hooks/useGetEvents";
 import CreateEvent from "./Events/CreateEvent";
 import EventTable from "./Events/EventTable";
 import FilterBox from "./Events/FilterBox";
-import EventList from "./Reminder/EventList";
+import ReminderList from "./Reminder/ReminderList";
 import TemplateBox from "./Templates/TemplateBox";
 
 const IframeTabs = () => {
@@ -109,7 +107,7 @@ const IframeTabs = () => {
   }, [filter]);
 
   return (
-    <Tabs mt="5" isFitted variant="soft-rounded" colorScheme="telegram">
+    <Tabs mt="5" isFitted variant="enclosed-colored" colorScheme="telegram">
       <TabList>
         <Tab>Events</Tab>
         <Tab>Send Message</Tab>
@@ -120,7 +118,8 @@ const IframeTabs = () => {
             <Input
               mt="8"
               p="3"
-              w="sm"
+              w={isLargerThan460 ? "md" : "sm"}
+              size={isLargerThan460?"sm":"xs"}
               disabled={endDate || startDate || filter}
               type="text"
               placeholder="Search Here...."
@@ -140,15 +139,13 @@ const IframeTabs = () => {
             setStartDate={setStartDate}
           />
           {/* CREATE EVENT */}
-          <Flex w="45%" justifyContent={"center"} alignItems={"center"}>
-            {/* CREATE EVENT */}
-            <CreateEvent />
 
             {/* SWITCH VIEW */}
-          <FormControl
-              display="flex"
-              alignItems="center"
-              justifyContent={"center"}
+          <Flex
+              align="center"
+              justify={"end"}
+              my="4"
+              mx="12"
             >
               <Switch
                 checked={viewGrid}
@@ -156,14 +153,16 @@ const IframeTabs = () => {
                 colorScheme={"teal"}
                 onChange={(e) => setViewGrid(e.target.checked)}
                 id="show-table"
+                size={isLargerThan460 ? "md" : "sm"}
                 mx="1"
               />
-              <FormLabel htmlFor="show-list" mb="1">
-                View In Grid
+              <FormLabel color={viewGrid? "green.600":"red.600"} fontSize={  isLargerThan460 ? "sm" : "xs"} htmlFor="show-list" mb="1">
+                GRID VIEW
               </FormLabel>
-            </FormControl>
+            <CreateEvent />
+
+            </Flex>
             
-          </Flex>
 
           {isValidating ? (
             // LOADING SPINNER
@@ -194,7 +193,7 @@ const IframeTabs = () => {
                     )}
                 </>
               ) : (
-                <EventList data={data} mutate={mutate} isValidating={isValidating} />
+                <ReminderList data={data} mutate={mutate} isValidating={isValidating} />
               )}
               {/* EVENT BOX */}
             </Box>

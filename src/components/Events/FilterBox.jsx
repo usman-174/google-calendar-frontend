@@ -1,10 +1,12 @@
 import { CloseIcon } from "@chakra-ui/icons";
 import {
   Box,
-  Button, Flex, FormLabel,
+  Button,
+  Flex,
+  FormLabel,
   Input,
   Text,
-  useMediaQuery
+  useMediaQuery,
 } from "@chakra-ui/react";
 import React from "react";
 
@@ -15,9 +17,11 @@ const FilterBox = ({
   filter,
   endDate,
   startDate,
-  filterEvents,search
+  filterEvents,
+  search,
 }) => {
   const [isLargerThan460] = useMediaQuery("(min-width: 460px)");
+  const [isLargerThan708] = useMediaQuery("(min-width: 708px)");
 
   return (
     <Box w="full">
@@ -25,19 +29,21 @@ const FilterBox = ({
         p="2"
         align={"center"}
         justify={"center"}
-        flexDirection={isLargerThan460 ? "row" : "column"}
+        flexDirection={isLargerThan708 ? "row" : "column"}
         mt={isLargerThan460 ? "3" : "0"}
       >
         {/* FROM INPUT */}
         <Flex
           mx={isLargerThan460 ? "5" : "0"}
+          my={isLargerThan708 ? 0 : 2}
           align={"center"}
-          flexDirection={isLargerThan460 ? "row" : "column"}        >
-          <FormLabel fontSize={isLargerThan460 ? "md" : "sm"}>From</FormLabel>
+          flexDirection={isLargerThan460 ? "row" : "column"}
+        >
+          <FormLabel fontSize={isLargerThan460 ? "sm" : "xs"}>From</FormLabel>
           <Input
             type="datetime-local"
             name="startDate"
-            w={isLargerThan460 ?null:"70vw"}
+            size={isLargerThan460 ? "sm" : "xs"}
             onChange={(e) => {
               if (!e.target.value && !endDate) {
                 setFilter(false);
@@ -50,17 +56,16 @@ const FilterBox = ({
         {/* TO INPUT */}
         <Flex
           mx={isLargerThan460 ? "5" : "0"}
-          my={isLargerThan460 ? "0" : "3"}
-
-          align={"center"}flexDirection={isLargerThan460 ? "row" : "column"}
+          my={isLargerThan708 ? 0 : 2}
+          align={"center"}
+          flexDirection={isLargerThan460 ? "row" : "column"}
         >
-          <FormLabel fontSize={isLargerThan460 ? "md" : "sm"}>To</FormLabel>
+          <FormLabel fontSize={isLargerThan460 ? "sm" : "xs"}>To</FormLabel>
 
           <Input
             type="datetime-local"
             name="endDate"
-            w={isLargerThan460 ?null:"70vw"}
-
+            size={isLargerThan460 ? "sm" : "xs"}
             onChange={(e) => {
               if (!e.target.value && !startDate) {
                 setFilter(false);
@@ -75,7 +80,7 @@ const FilterBox = ({
           <Button
             disabled={(!endDate && !startDate) || search}
             onClick={filterEvents}
-            p={isLargerThan460 ? "3" : "1"}
+            size={isLargerThan460 ? "sm" : "xs"}
             variant={"solid"}
             colorScheme={"teal"}
           >
@@ -83,8 +88,8 @@ const FilterBox = ({
           </Button>
         </Box>
 
-{/* RESET FILET BUTTON */}
-        {!search  && filter && (
+        {/* RESET FILET BUTTON */}
+        {!search && filter && (
           <Box m="2">
             <Text
               _hover={{ textColor: "teal", textDecoration: "underline" }}
@@ -103,9 +108,6 @@ const FilterBox = ({
             </Text>
           </Box>
         )}
-     
-
- 
       </Flex>
     </Box>
   );

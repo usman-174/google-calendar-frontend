@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Drawer,
   DrawerBody,
@@ -7,8 +6,7 @@ import {
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
-  DrawerOverlay,
-  FormLabel,
+  DrawerOverlay, FormLabel,
   HStack,
   Input,
   Select,
@@ -18,11 +16,10 @@ import {
   Textarea,
   useDisclosure,
   useMediaQuery,
-  useToast,
+  useToast
 } from "@chakra-ui/react";
 import axios from "axios";
-import { useEffect } from "react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import useSWR from "swr";
@@ -124,24 +121,19 @@ function CreateEvent() {
     }
   }, [setTemplate, setkeywords, templatesList, template, keywords]);
   return (
-    <Box
-      my="1"
-      ml={isLargerThan460 ? "56" : null}
-      mx={isLargerThan460 ? null : "auto"}
-    >
-      <Button
-        mx={isLargerThan460 ? null : "auto"}
-        my={isLargerThan460 ? "5" : "2"}
+    <>
+     <Button
         variant={"outline"}
-        p="2"
+        size={isLargerThan460 ? "sm" : "xs"}
         disabled={isValidating}
         colorScheme={"twitter"}
-        textAlign={isLargerThan460 ? "center" : "left"}
+        textAlign={"center"}
         ref={btnRef}
         onClick={onOpen}
       >
         CREATE EVENT
       </Button>
+     
       <Drawer
         isOpen={isOpen}
         size={isLargerThan460 ? "lg" : "md"}
@@ -292,7 +284,7 @@ function CreateEvent() {
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
-    </Box>
+    </>
   );
 }
 export default CreateEvent;
