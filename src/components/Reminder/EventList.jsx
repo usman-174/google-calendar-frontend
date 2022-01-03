@@ -5,20 +5,17 @@ import {
   Heading,
   Spinner,
   useMediaQuery,
-  useToast,
+  useToast
 } from "@chakra-ui/react";
 import { DataGrid } from "@material-ui/data-grid";
-import React, { useEffect, useState } from "react";
-import useGetEvent from "../../hooks/useGetEvents";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import FeedBack from "./FeedBack";
-const EventList = () => {
+const EventList = ({data,isValidating,mutate}) => {
   const [isLargerThan460] = useMediaQuery("(min-width: 460px)");
   const [isLargerThan800] = useMediaQuery("(min-width: 800px)");
 
-  const { isValidating, data } = useGetEvent();
   const toast = useToast();
-
   const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(false)
   const [feedback, setFeedback] = useState(null);
@@ -33,7 +30,7 @@ const EventList = () => {
     {
       field: "keywords",
       headerName: "Keywords",
-      width: 230,
+      width: 180,
       sortable: false,
 
       align: "left",
@@ -49,18 +46,18 @@ const EventList = () => {
       field: "startTime",
       headerName: "Starting Time",
       align: "center",
-      width: 204,
+      width: 200,
     },
     {
       field: "endTime",
       headerName: "Ending Time",
       sortable: true,
       align: "center",
-      width: 204,
+      width: 200,
     },
   ];
 
-  const rows = data?.items?.map((event) => ({
+  const rows = data?.items?.filter(item=>!item.description.includes("#reminder_sent")).map((event) => ({
     id: event?.id,
     phone: event?.summary,
     keywords: event?.description
@@ -84,15 +81,14 @@ const EventList = () => {
   const handleSendReminders = async () => {
     if (selectedItems.length) {
       try {
-        setFeedback(null);
         setLoading(true)
         const { data } = await axios.post("/message/bulk", {
           selectedEvents: selectedItems,
         });
-        console.table(data);
         setFeedback(data);
         return;
       } catch (error) {
+        setFeedback(null);
         toast({
           title: error?.response.data.error || "Failed to send message.",
           status: "error",
@@ -101,6 +97,8 @@ const EventList = () => {
         });
         return;
       }finally{
+  mutate();
+
         setLoading(false)
       }
     }
@@ -111,14 +109,7 @@ const EventList = () => {
   }, []);
   return (
     <Box mx={isLargerThan460 ? "5" : "0" }mt="8" >
-      {/* <Heading
-        my="5"
-        textAlign={"center"}
-        size={isLargerThan460 ? "lg" : "md"}
-        textColor={"teal.800"}
-      >
-        EVENT LIST
-      </Heading> */}
+     
       <Button
         onClick={handleSendReminders}
         my="2"
@@ -153,7 +144,9 @@ const EventList = () => {
             disableSelectionOnClick
             />
         </Box>
-       {feedback && <FeedBack feedback={feedback} />}
+       {feedback && <FeedBack feedback={feedback} />
+       
+       }
             </>
       ) : (
         <Center w="100%">

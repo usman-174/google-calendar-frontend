@@ -19,7 +19,7 @@
     "react-phone-input-2": "^2.14.0",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
-    "read-more-react": "^1.0.10",
+    "react-show-more-text": "^1.5.2",
     "swr": "^1.1.1",
     "web-vitals": "^2.1.2"
   },

@@ -1,11 +1,20 @@
 import {
   Box,
   Button,
-  Center, Input, Spinner, Tab,
+  Center,
+  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+  Spinner,
+  Switch,
+  Tab,
   TabList,
   TabPanel,
-  TabPanels, Tabs, useMediaQuery,
-  useToast
+  TabPanels,
+  Tabs,
+  useMediaQuery,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -22,6 +31,7 @@ const IframeTabs = () => {
 
   const [startDate, setStartDate] = useState("");
   const [loadMore, setLoadMore] = useState(false);
+  const [viewGrid, setViewGrid] = useState(true);
   const [endDate, setEndDate] = useState("");
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
@@ -29,7 +39,8 @@ const IframeTabs = () => {
   const { isValidating, data, error, nextToken, mutate } = useGetEvent(
     startDate,
     endDate,
-    filter,search
+    filter,
+    search
   );
 
   const filterEvents = () => {
@@ -98,28 +109,24 @@ const IframeTabs = () => {
   }, [filter]);
 
   return (
-    <Tabs  mt="5"  isFitted  variant='soft-rounded' colorScheme='telegram'>
+    <Tabs mt="5" isFitted variant="soft-rounded" colorScheme="telegram">
       <TabList>
         <Tab>Events</Tab>
         <Tab>Send Message</Tab>
-        <Tab>Reminders</Tab>
       </TabList>
       <TabPanels>
         <TabPanel>
-          {/* <Heading
-            my="5"
-            textAlign={"center"}
-            size={isLargerThan460 ? "lg" : "md"}
-            textColor={"teal.800"}
-          >
-            EVENTS
-          </Heading> */}
           <Center>
-
-          <Input  mt="8" p="3" w="sm"
-          disabled={endDate||startDate||filter}
-          type="text" placeholder="Search Here...."  value={search} onChange={(e)=>setSearch(e.target.value)}/>
-          
+            <Input
+              mt="8"
+              p="3"
+              w="sm"
+              disabled={endDate || startDate || filter}
+              type="text"
+              placeholder="Search Here...."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
           </Center>
           {/* FILTER BOX STARTS */}
           <FilterBox
@@ -133,32 +140,63 @@ const IframeTabs = () => {
             setStartDate={setStartDate}
           />
           {/* CREATE EVENT */}
-          <CreateEvent />
-          {isValidating  ? (
+          <Flex w="45%" justifyContent={"center"} alignItems={"center"}>
+            {/* CREATE EVENT */}
+            <CreateEvent />
+
+            {/* SWITCH VIEW */}
+          <FormControl
+              display="flex"
+              alignItems="center"
+              justifyContent={"center"}
+            >
+              <Switch
+                checked={viewGrid}
+                defaultChecked={viewGrid}
+                colorScheme={"teal"}
+                onChange={(e) => setViewGrid(e.target.checked)}
+                id="show-table"
+                mx="1"
+              />
+              <FormLabel htmlFor="show-list" mb="1">
+                View In Grid
+              </FormLabel>
+            </FormControl>
+            
+          </Flex>
+
+          {isValidating ? (
             // LOADING SPINNER
             <Center w="100%">
               <Spinner mx="auto" mt="10" size="xl" />;
             </Center>
-          ) : (!isValidating && data?.items?.length) ? (
-            <Box >
+          ) : !isValidating && data?.items?.length ? (
+            <Box>
+              {viewGrid ? (
+                <>
+                  <EventTable events={data.items} search={search} />
+                  {!search &&
+                    !filter &&
+                    nextToken.length &&
+                    !isValidating &&
+                    data?.items?.length !== data?.totalItems && (
+                      <Center>
+                        <Button
+                          isLoading={loadMore}
+                          my="3"
+                          onClick={handlePaginate}
+                          colorScheme={"telegram"}
+                          size={isLargerThan460 ? "md" : "sm"}
+                        >
+                          Load More
+                        </Button>
+                      </Center>
+                    )}
+                </>
+              ) : (
+                <EventList data={data} mutate={mutate} isValidating={isValidating} />
+              )}
               {/* EVENT BOX */}
-              <EventTable events={data.items} search={search} />
-              {(!search && !filter) &&
-                nextToken.length &&
-                !isValidating &&
-                data?.items?.length !== data?.totalItems && (
-                  <Center>
-                    <Button
-                      isLoading={loadMore}
-                      my="3"
-                      onClick={handlePaginate}
-                      colorScheme={"telegram"}
-                      size={isLargerThan460 ? "md" : "sm"}
-                    >
-                      Load More
-                    </Button>
-                  </Center>
-                )}
             </Box>
           ) : (
             <Box
@@ -174,14 +212,11 @@ const IframeTabs = () => {
           {/* EVENT BOX END */}
           {/* ------------------------------- */}
         </TabPanel>
-        <TabPanel >
+        <TabPanel>
           {/* CREATE TEMPLATE */}
           <TemplateBox />
         </TabPanel>
-        <TabPanel>
-          {/* EVENT LIST TABLE REMINDERS */}
-       <EventList/>
-        </TabPanel>
+       
       </TabPanels>
     </Tabs>
   );

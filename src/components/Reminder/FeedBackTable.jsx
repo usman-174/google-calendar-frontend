@@ -1,8 +1,7 @@
 import {
-    Table, Tbody, Tfoot, Th,Td, Thead, Tr, Text
+  Table, Tbody, Td, Tfoot, Th, Thead, Tr
 } from "@chakra-ui/react";
 import React from "react";
-import ReadMoreReact from "read-more-react";
 
 const FeedBackTable = ({ info }) => {
 
@@ -18,22 +17,7 @@ const FeedBackTable = ({ info }) => {
         <Tr>
           {info?.map((row,i) => (
               <>
-            <Td key={row.body+String(i)}><ReadMoreReact
-                        text={
-                          row.body
-                        }
-                        min={80}
-                        max={500}
-                        readMoreText={
-                          <Text
-                            textColor={"blue.400"}
-                            fontSize={"sm"}
-                            cursor={"pointer"}
-                          >
-                            read more...
-                          </Text>
-                        }
-                      /></Td>
+            <Td key={row.body+String(i)}>{row.body}</Td>
             <Td  key={row.to+i}>{row.to}</Td>
               </>
             ))}

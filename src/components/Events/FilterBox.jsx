@@ -103,14 +103,9 @@ const FilterBox = ({
             </Text>
           </Box>
         )}
-      {/* CREATE BUTTOn */}
-        {/* <Box >
-        <Button my="2" mx={"4"} colorScheme={"telegram"}>
-          <AddIcon mr="1" /> Create an Event
-        </Button>
-      </Box> */}
+     
 
-        {/* FILTER END HERE */}
+ 
       </Flex>
     </Box>
   );

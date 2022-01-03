@@ -10,9 +10,9 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
+import ShowMoreText from "react-show-more-text";
 import Highlighter from "react-highlight-words";
 import ShowKeywords from "../layouts/ShowKeywords";
-import ReadMoreReact from "read-more-react";
 import DeleteEventAlter from "./DeleteEventAlert";
 
 const EventTable = ({ events, search }) => {
@@ -34,7 +34,11 @@ const EventTable = ({ events, search }) => {
               textAlign={"center"}
               rounded="md"
               mx={"auto"}
-              bg="#fff"
+              bg={
+                !event.description.includes("#reminder_sent")
+                  ? "#fff"
+                  : "#f4f2f2"
+              }
               shadow="md"
               borderWidth="1px"
               key={event.id}
@@ -61,7 +65,6 @@ const EventTable = ({ events, search }) => {
               >
                 <DeleteIcon
                   color="red.400"
-                  // onClick={() => deleteEvent(event.id)}
                   onClick={() => setIsOpen(true)}
                   _hover={{ textColor: "red.600" }}
                   mx="12"
@@ -75,28 +78,7 @@ const EventTable = ({ events, search }) => {
                   eventId={event.id}
                   cancelRef={cancelRef}
                 />
-                {/* <Flex m="2" direction={"column"}>
-                  <Text
-                    textAlign={"left"}
-                    fontSize={"xs"}
-                    fontWeight={"bold"}
-                    color="black"
-                  >
-                    ID :
-                  </Text>
-                  <Text px="2">
-                    {search ? (
-                      <Highlighter
-                        searchWords={search.split(" ")}
-                        autoEscape={true}
-                        textToHighlight={event.id}
-                      />
-                    ) : (
-                      event.id
-                    )}
-                  </Text>
-                </Flex> */}
-                 <Flex m="2" direction="column">
+                <Flex m="2" direction="column">
                   <Text
                     textAlign={"left"}
                     fontSize={"xs"}
@@ -114,6 +96,19 @@ const EventTable = ({ events, search }) => {
                       />
                     ) : (
                       event.summary
+                    )} 
+                    {event.description.includes("#reminder_sent") ? (
+                      <Text
+                        as={"span"}
+                        textColor="green.400"
+                        display={"inline-block"}
+                        fontSize={"xs"}
+                        mx="2"
+                      >
+                         Reminder Sent
+                      </Text>
+                    ) : (
+                      ""
                     )}
                     <Tooltip label="Copy Phone">
                       <CopyIcon
@@ -156,7 +151,7 @@ const EventTable = ({ events, search }) => {
                     <ShowKeywords description={event.description} />
                   )}
                 </Flex>
-               
+
                 <Flex m="2" direction="column">
                   <Text
                     textAlign={"left"}
@@ -166,32 +161,39 @@ const EventTable = ({ events, search }) => {
                   >
                     Description :
                   </Text>
-                  <Text noOfLines={4}>
-                    {search ? (
+
+                  {search ? (
+                    <Text>
                       <Highlighter
                         searchWords={search.split(" ")}
                         autoEscape={true}
-                        textToHighlight={event.description.split(" || ")[0]}
-                      />
-                    ) : (
-                      <ReadMoreReact
-                        text={
-                          event.description.split(" || ")[0]
+                        textToHighlight={
+                          event.description.includes("#reminder_sent")
+                            ? event.description
+                                .split(" || ")[0]
+                                .split("#reminder_sent ")[1]
+                            : event.description.split(" || ")[0]
                         }
-                        min={80}
-                        max={500}
-                        readMoreText={
-                          <Text
-                            textColor={"blue.400"}
-                            fontSize={"sm"}
-                            cursor={"pointer"}
-                          >
-                            read more...
-                          </Text>
-                        }
-                      />
-                    )}
-                  </Text>
+                      />{" "}
+                    </Text>
+                  ) : (
+                  
+                    <ShowMoreText
+                      lines={3}
+                      more="Read more"
+                      less={"Read less"}
+                      className="content-css"
+                      anchorClass="show_more"
+                      expanded={false}
+                      truncatedEndingComponent={"... "}
+                    >
+                      {event.description.includes("#reminder_sent")
+                        ? event.description
+                            .split(" || ")[0]
+                            .split("#reminder_sent ")[1]
+                        : event.description.split(" || ")[0]}
+                    </ShowMoreText>
+                  )}
                 </Flex>
 
                 <Flex
