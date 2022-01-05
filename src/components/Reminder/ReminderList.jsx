@@ -113,7 +113,7 @@ const EventList = ({ data, isValidating, mutate }) => {
         Send Reminders
       </Button>
 
-      {isValidating && !data.items.length ? (
+      {isValidating && !data?.items?.length ? (
         <Center w="100%">
           <Spinner mx="auto" mt="10" size="xl" />
         </Center>
