@@ -2,7 +2,8 @@ import {
   Box,
   Button,
   Center,
-  Flex, FormLabel,
+  Flex,
+  FormLabel,
   Input,
   Spinner,
   Switch,
@@ -12,7 +13,7 @@ import {
   TabPanels,
   Tabs,
   useMediaQuery,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -119,7 +120,7 @@ const IframeTabs = () => {
               mt="8"
               p="3"
               w={isLargerThan460 ? "md" : "sm"}
-              size={isLargerThan460?"sm":"xs"}
+              size={isLargerThan460 ? "sm" : "xs"}
               disabled={endDate || startDate || filter}
               type="text"
               placeholder="Search Here...."
@@ -140,82 +141,82 @@ const IframeTabs = () => {
           />
           {/* CREATE EVENT */}
 
-            {/* SWITCH VIEW */}
-          <Flex
-              align="center"
-              justify={"end"}
-              my="4"
-              mx="12"
+          {/* SWITCH VIEW */}
+          {!isValidating && data?.items?.length ?<Flex align="center" justify={"end"} my="4" mx="12">
+            <Switch
+              checked={viewGrid}
+              defaultChecked={viewGrid}
+              colorScheme={"teal"}
+              onChange={(e) => setViewGrid(e.target.checked)}
+              id="show-table"
+              size={isLargerThan460 ? "md" : "sm"}
+              mx="1"
+            />
+            <FormLabel
+              color={viewGrid ? "green.600" : "red.600"}
+              fontSize={isLargerThan460 ? "sm" : "xs"}
+              htmlFor="show-list"
+              mb="1"
             >
-              <Switch
-                checked={viewGrid}
-                defaultChecked={viewGrid}
-                colorScheme={"teal"}
-                onChange={(e) => setViewGrid(e.target.checked)}
-                id="show-table"
-                size={isLargerThan460 ? "md" : "sm"}
-                mx="1"
-              />
-              <FormLabel color={viewGrid? "green.600":"red.600"} fontSize={  isLargerThan460 ? "sm" : "xs"} htmlFor="show-list" mb="1">
-                GRID VIEW
-              </FormLabel>
+              GRID VIEW
+            </FormLabel>
             <CreateEvent />
+          </Flex>:null}
 
-            </Flex>
-            
-
-          {isValidating ? (
-            // LOADING SPINNER
+          {/* // LOADING SPINNER
             <Center w="100%">
-              <Spinner mx="auto" mt="10" size="xl" />;
-            </Center>
-          ) : !isValidating && data?.items?.length ? (
-            <Box>
-              {viewGrid ? (
-                <>
-                  <EventTable events={data.items} search={search} />
-                  {!search &&
-                    !filter &&
-                    nextToken.length &&
-                    !isValidating &&
-                    data?.items?.length !== data?.totalItems && (
-                      <Center>
-                        <Button
-                          isLoading={loadMore}
-                          my="3"
-                          onClick={handlePaginate}
-                          colorScheme={"telegram"}
-                          size={isLargerThan460 ? "md" : "sm"}
-                        >
-                          Load More
-                        </Button>
-                      </Center>
-                    )}
-                </>
-              ) : (
-                <ReminderList data={data} mutate={mutate} isValidating={isValidating} />
-              )}
-              {/* EVENT BOX */}
-            </Box>
+              <Spinner mx="auto" mt="10" size="xl" />
+            </Center> */}
+          {viewGrid ? (
+            isValidating ? (
+              <Center w="100%">
+                <Spinner mx="auto" mt="10" size="xl" />
+              </Center>
+            ) : data?.items?.length ? (
+              <>
+                <EventTable events={data.items} search={search} />
+                {!search &&
+                  !filter &&
+                  nextToken.length &&
+                  !isValidating &&
+                  data?.items?.length !== data?.totalItems && (
+                    <Center>
+                      <Button
+                        isLoading={loadMore}
+                        my="3"
+                        onClick={handlePaginate}
+                        colorScheme={"telegram"}
+                        size={isLargerThan460 ? "md" : "sm"}
+                      >
+                        Load More
+                      </Button>
+                    </Center>
+                  )}
+              </>
+            ) : (
+              <Box
+                mx="auto"
+                fontWeight={"semibold"}
+                textAlign={"center"}
+                my="10"
+                fontSize={"3xl"}
+              >
+                NO EVENTS AVAILABLE
+              </Box>
+            )
           ) : (
-            <Box
-              mx="auto"
-              fontWeight={"semibold"}
-              textAlign={"center"}
-              my="10"
-              fontSize={"3xl"}
-            >
-              NO EVENTS AVAILABLE
-            </Box>
+            <ReminderList
+              data={data}
+              mutate={mutate}
+              isValidating={isValidating}
+            />
           )}
-          {/* EVENT BOX END */}
           {/* ------------------------------- */}
         </TabPanel>
         <TabPanel>
           {/* CREATE TEMPLATE */}
           <TemplateBox />
         </TabPanel>
-       
       </TabPanels>
     </Tabs>
   );

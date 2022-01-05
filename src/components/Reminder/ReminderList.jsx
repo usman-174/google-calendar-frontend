@@ -29,28 +29,26 @@ const EventList = ({ data, isValidating, mutate }) => {
 
   const toast = useToast();
   const [selectedItems, setSelectedItems] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState(null);
-
+  const [loading, setLoading] = useState(false);
   const rows = data?.items
     ?.filter((item) => !item.description.includes("#reminder_sent"))
     .map((event) => ({
       id: event?.id,
       phone: event?.summary,
+      summary: event?.summary,
       keywords: event?.description
         .split(" || ")[1]
         .replace(" ", " , ")
         .toUpperCase(),
-      description: event?.description.split(" || ")[0],
-      startTime: new Date(event.start?.dateTime).toLocaleString(),
-      endTime: new Date(event.end?.dateTime).toLocaleString(),
+      description: event?.description,
+      ...event,
     }));
   const onCheckBoxChange = (e) => {
     if (e.target.value === "all" && e.target.checked) {
       setSelectedItems(rows);
       return;
     } else if (e.target.value === "all" && !e.target.checked) {
-      console.log("resetAll");
       setSelectedItems([]);
       return;
     }
@@ -58,7 +56,6 @@ const EventList = ({ data, isValidating, mutate }) => {
     const found = selectedItems.find((x) => x.id === value.id);
     if (e.target.checked) {
       if (found) {
-        console.log("Fk eyea");
       } else {
         const data = [...selectedItems, value];
 
@@ -71,29 +68,34 @@ const EventList = ({ data, isValidating, mutate }) => {
   };
   const handleSendReminders = async () => {
     if (selectedItems.length) {
+      setFeedback(null);
+      setLoading(true);
       try {
-        setLoading(true);
         const { data } = await axios.post("/message/bulk", {
           selectedEvents: selectedItems,
         });
-        setFeedback(data);
+        if (data) {
+          setFeedback(data);
+          if (data.success.length) {
+            mutate();
+          }
+        }
         return;
       } catch (error) {
         setFeedback(null);
         toast({
-          title: error?.response.data.error || "Failed to send message.",
+          title: error?.response?.data?.error || "Failed to send message.",
           status: "error",
           duration: 1700,
           isClosable: true,
         });
         return;
       } finally {
-        mutate();
-
         setLoading(false);
       }
     }
   };
+
   useEffect(() => {
     setSelectedItems([]);
   }, []);
@@ -102,8 +104,8 @@ const EventList = ({ data, isValidating, mutate }) => {
       <Button
         onClick={handleSendReminders}
         my="2"
+        isLoading={isValidating || loading}
         mx="4"
-        isLoading={loading}
         size={isLargerThan460 ? "sm" : "xs"}
         disabled={!selectedItems.length}
         colorScheme={"messenger"}
@@ -111,18 +113,13 @@ const EventList = ({ data, isValidating, mutate }) => {
         Send Reminders
       </Button>
 
-      {isValidating ? (
+      {isValidating && !data.items.length ? (
         <Center w="100%">
-          <Spinner mx="auto" mt="12" size="xl" />;
+          <Spinner mx="auto" mt="10" size="xl" />
         </Center>
-      ) : !isValidating && data?.items?.length ? (
+      ) : data?.items?.length ? (
         <Box my="8" p="1" overflowX={"auto"}>
-          <Table
-            size={"sm"}
-            colorScheme="facebook"
-            mx="auto"
-           
-          >
+          <Table size={"sm"} colorScheme="facebook" mx="auto">
             <TableCaption color={"telegram.400"} fontWeight={"bold"}>
               SELECT EVENTS TO SEND REMINDERS
             </TableCaption>
@@ -142,7 +139,7 @@ const EventList = ({ data, isValidating, mutate }) => {
                     />
                   </Flex>
                 </Th>
-                <Th textAlign={"center"} >Keywords</Th>
+                <Th textAlign={"center"}>Keywords</Th>
                 <Th textAlign={"center"}>Phone No</Th>
                 <Th textAlign={"center"}>Description</Th>
                 <Th textAlign={"center"}>Start Time</Th>
@@ -152,19 +149,25 @@ const EventList = ({ data, isValidating, mutate }) => {
             <Tbody>
               {rows.map((row, i) => (
                 <Tr key={row.id}>
-                  <Td  >
+                  <Td>
                     <Flex align={"center"} justify={"space-between"}>
                       <Text mx="2">{i + 1}</Text>
                       <Checkbox
                         colorScheme={"green"}
-                        isChecked={selectedItems.find((x) => x.id === row.id)?true:false}
+                        isChecked={
+                          selectedItems.find((x) => x.id === row.id)
+                            ? true
+                            : false
+                        }
                         value={JSON.stringify(row)}
                         onChange={onCheckBoxChange}
                       />
                     </Flex>
                   </Td>
-                  <Td  textAlign={"center"} fontSize={"sm"}>{row.keywords}</Td>
-                  <Td  textAlign={"center"}>{row.phone.replace(" ","")}</Td>
+                  <Td textAlign={"center"} fontSize={"sm"}>
+                    {row.keywords}
+                  </Td>
+                  <Td textAlign={"center"}>{row.phone.replace(" ", "")}</Td>
                   <Td maxWidth={"36vw"} fontSize={"sm"}>
                     <ShowMoreText
                       lines={3}
@@ -175,19 +178,17 @@ const EventList = ({ data, isValidating, mutate }) => {
                       expanded={false}
                       truncatedEndingComponent={"... "}
                     >
-                      {row.description}
+                      {row.description.split(" || ")[0]}
                     </ShowMoreText>
                   </Td>
-                  <Td>{row.startTime}</Td>
-                  <Td>{row.endTime}</Td>
+                  <Td>{new Date(row.start?.dateTime).toLocaleString()}</Td>
+                  <Td>{new Date(row.end?.dateTime).toLocaleString()}</Td>
                 </Tr>
               ))}
             </Tbody>
             <Tfoot>
               <Tr>
-                <Th textAlign={"center"}>
-                  
-                </Th>
+                <Th textAlign={"center"}></Th>
 
                 <Th textAlign={"center"}>Keywords</Th>
                 <Th textAlign={"center"}>Phone No</Th>
@@ -197,12 +198,12 @@ const EventList = ({ data, isValidating, mutate }) => {
               </Tr>
             </Tfoot>
           </Table>
-          {feedback && <FeedBack feedback={feedback} />}
+          <FeedBack feedback={feedback} />
         </Box>
       ) : (
         <Center w="100%">
           <Heading m="8" size={"sm"}>
-            No Events
+            No Events Available
           </Heading>
         </Center>
       )}

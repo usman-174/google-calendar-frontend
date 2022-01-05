@@ -14,14 +14,12 @@ const FeedBackTable = ({ info }) => {
         </Tr>
       </Thead>
       <Tbody>
-        <Tr>
           {info?.map((row,i) => (
-              <>
-            <Td key={row.body+String(i)}>{row.body}</Td>
-            <Td  key={row.to+i}>{row.to}</Td>
-              </>
+              <Tr key={row.body+String(i)}>
+            <Td>{row.body}</Td>
+            <Td >{row.to}</Td>
+              </Tr>
             ))}
-        </Tr>
       </Tbody>
      {info.length ? <Tfoot>
       <Tr>

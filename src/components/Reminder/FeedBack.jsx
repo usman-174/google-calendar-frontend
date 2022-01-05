@@ -4,9 +4,9 @@ import FeedBackTable from "./FeedBackTable";
 
 const FeedBack = ({ feedback }) => {
   const [isLargerThan460] = useMediaQuery("(min-width: 460px)");
-    if(!feedback){
-        return null
-    }
+  if(!feedback){
+    return <></>
+  }
   return (
     <Box w="80%" my="4" mx="auto">
       {/* HEADING */}
