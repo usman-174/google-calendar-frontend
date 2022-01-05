@@ -142,7 +142,7 @@ const IframeTabs = () => {
           {/* CREATE EVENT */}
 
           {/* SWITCH VIEW */}
-          {!isValidating && data?.items?.length ?<Flex align="center" justify={"end"} my="4" mx="12">
+         <Flex align="center" justify={"end"} my="4" mx="12">
             <Switch
               checked={viewGrid}
               defaultChecked={viewGrid}
@@ -161,14 +161,14 @@ const IframeTabs = () => {
               GRID VIEW
             </FormLabel>
             <CreateEvent />
-          </Flex>:null}
+          </Flex>
 
           {/* // LOADING SPINNER
             <Center w="100%">
               <Spinner mx="auto" mt="10" size="xl" />
             </Center> */}
           {viewGrid ? (
-            isValidating ? (
+            isValidating && !data?.items?.length? (
               <Center w="100%">
                 <Spinner mx="auto" mt="10" size="xl" />
               </Center>

@@ -6,7 +6,8 @@ import {
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
-  DrawerOverlay, FormLabel,
+  DrawerOverlay,
+  FormLabel,
   HStack,
   Input,
   Select,
@@ -16,7 +17,7 @@ import {
   Textarea,
   useDisclosure,
   useMediaQuery,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
@@ -24,6 +25,9 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import useSWR from "swr";
 import useGetEvent from "../../hooks/useGetEvents";
+function escapeRegExp(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$&|#\s]/g, "");
+}
 
 function CreateEvent() {
   const { isValidating, mutate } = useGetEvent();
@@ -122,10 +126,10 @@ function CreateEvent() {
   }, [setTemplate, setkeywords, templatesList, template, keywords]);
   return (
     <>
-     <Button
+      <Button
         variant={"outline"}
         size={isLargerThan460 ? "sm" : "xs"}
-        disabled={isValidating}
+        disabled={isValidating && !templatesList?.length}
         colorScheme={"twitter"}
         textAlign={"center"}
         ref={btnRef}
@@ -133,7 +137,7 @@ function CreateEvent() {
       >
         CREATE EVENT
       </Button>
-     
+
       <Drawer
         isOpen={isOpen}
         size={isLargerThan460 ? "lg" : "md"}
@@ -153,45 +157,30 @@ function CreateEvent() {
           </DrawerHeader>
 
           <DrawerBody>
-            <FormLabel
-              
-              fontSize={isLargerThan460 ? "md" : "sm"}
-            >
-              From
-            </FormLabel>
+            <FormLabel fontSize={isLargerThan460 ? "md" : "sm"}>From</FormLabel>
 
             <Input
               type="datetime-local"
               name="endDate"
-              
               w={"sm"}
               onChange={(e) => setStartDate(e.target.value)}
               value={startDate}
             />
-            <FormLabel
-              
-              fontSize={isLargerThan460 ? "md" : "sm"}
-            >
-              To
-            </FormLabel>
+            <FormLabel fontSize={isLargerThan460 ? "md" : "sm"}>To</FormLabel>
 
             <Input
               type="datetime-local"
               name="endDate"
               w={"sm"}
-        
               onChange={(e) => setEndDate(e.target.value)}
               value={endDate}
             />
-            <FormLabel
-              
-              fontSize={isLargerThan460 ? "md" : "sm"}
-            >
+            <FormLabel fontSize={isLargerThan460 ? "md" : "sm"}>
               Description
             </FormLabel>
             <Textarea
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={(e) => setDescription(escapeRegExp(e.target.value))}
               placeholder="Type Title here..."
             />
             {description.length < 15 && (
@@ -200,10 +189,7 @@ function CreateEvent() {
                 Atleast {15 - description.length} more words{" "}
               </Text>
             )}
-            <FormLabel
-              
-              fontSize={isLargerThan460 ? "md" : "sm"}
-            >
+            <FormLabel fontSize={isLargerThan460 ? "md" : "sm"}>
               Set Keywords
             </FormLabel>
             <Select
@@ -212,7 +198,7 @@ function CreateEvent() {
               onChange={(e) => {
                 setTemplate(e.target.value);
               }}
-             w="50%"
+              w="50%"
             >
               {templatesList?.map((temp) => (
                 <option
@@ -247,20 +233,17 @@ function CreateEvent() {
               ))}
               )
             </HStack>
-            <FormLabel
-              my="2"
-              
-              fontSize={isLargerThan460 ? "md" : "sm"}
-            >
+            <FormLabel my="2" fontSize={isLargerThan460 ? "md" : "sm"}>
               Phone No
             </FormLabel>
-            
+
             <PhoneInput
               value={phone}
               placeholder="Enter formated phone number"
               countryCodeEditable={true}
               enableSearch={true}
-              onChange={(_,__, ___, formattedValue) => setPhone(formattedValue.replace("-",""))
+              onChange={(_, __, ___, formattedValue) =>
+                setPhone(formattedValue.replace("-", ""))
               }
             />
           </DrawerBody>
