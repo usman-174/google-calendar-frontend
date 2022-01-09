@@ -25,9 +25,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import useSWR from "swr";
 import useGetEvent from "../../hooks/useGetEvents";
-function escapeRegExp(text) {
-  return text.replace(/[-[\]{}()*+?.,\\^$&|#\s]/g, "");
-}
+
 
 function CreateEvent() {
   const { isValidating, mutate } = useGetEvent();
@@ -180,7 +178,7 @@ function CreateEvent() {
             </FormLabel>
             <Textarea
               value={description}
-              onChange={(e) => setDescription(escapeRegExp(e.target.value))}
+              onChange={(e) => setDescription(e.target.value)}
               placeholder="Type Title here..."
             />
             {description.length < 15 && (

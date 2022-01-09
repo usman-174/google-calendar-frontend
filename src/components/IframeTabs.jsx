@@ -21,6 +21,7 @@ import useGetEvent from "../hooks/useGetEvents";
 import CreateEvent from "./Events/CreateEvent";
 import EventTable from "./Events/EventTable";
 import FilterBox from "./Events/FilterBox";
+import FeedBack from "./Reminder/FeedBack";
 import ReminderList from "./Reminder/ReminderList";
 import TemplateBox from "./Templates/TemplateBox";
 
@@ -29,6 +30,7 @@ const IframeTabs = () => {
   const toast = useToast();
 
   const [startDate, setStartDate] = useState("");
+  const [feedback, setFeedback] = useState(null);
   const [loadMore, setLoadMore] = useState(false);
   const [viewGrid, setViewGrid] = useState(true);
   const [endDate, setEndDate] = useState("");
@@ -105,13 +107,14 @@ const IframeTabs = () => {
       });
     }
     // eslint-disable-next-line
-  }, [filter]);
+  }, [filter,setFilter]);
 
   return (
     <Tabs mt="5" isFitted variant="enclosed-colored" colorScheme="linkedin">
       <TabList>
         <Tab>Events</Tab>
         <Tab>Send Message</Tab>
+        <Tab>Reminder Logs</Tab>
       </TabList>
       <TabPanels>
         <TabPanel>
@@ -162,11 +165,6 @@ const IframeTabs = () => {
             </FormLabel>
             <CreateEvent />
           </Flex>
-
-          {/* // LOADING SPINNER
-            <Center w="100%">
-              <Spinner mx="auto" mt="10" size="xl" />
-            </Center> */}
           {viewGrid ? (
             isValidating && !data?.items?.length? (
               <Center w="100%">
@@ -207,6 +205,8 @@ const IframeTabs = () => {
           ) : (
             <ReminderList
               data={data}
+              setFeedback={setFeedback}
+            
               mutate={mutate}
               isValidating={isValidating}
             />
@@ -216,6 +216,10 @@ const IframeTabs = () => {
         <TabPanel>
           {/* CREATE TEMPLATE */}
           <TemplateBox />
+        </TabPanel>
+         <TabPanel>
+          {/* REMINDER LOGS*/}
+          <FeedBack feedback={feedback} />
         </TabPanel>
       </TabPanels>
     </Tabs>

@@ -22,14 +22,13 @@ import axios from "axios";
 
 import React, { useEffect, useState } from "react";
 import ShowMoreText from "react-show-more-text";
-import FeedBack from "./FeedBack";
 
-const EventList = ({ data, isValidating, mutate }) => {
+const EventList = ({ data, isValidating, mutate,setFeedback }) => {
   const [isLargerThan460] = useMediaQuery("(min-width: 460px)");
+  
 
   const toast = useToast();
   const [selectedItems, setSelectedItems] = useState([]);
-  const [feedback, setFeedback] = useState(null);
   const [loading, setLoading] = useState(false);
   const rows = data?.items
     ?.filter((item) => !item.description.includes("#reminder_sent"))
@@ -78,6 +77,7 @@ const EventList = ({ data, isValidating, mutate }) => {
           setFeedback(data);
           if (data.success.length) {
             mutate();
+            setSelectedItems([])
           }
         }
         return;
@@ -198,7 +198,6 @@ const EventList = ({ data, isValidating, mutate }) => {
               </Tr>
             </Tfoot>
           </Table>
-          <FeedBack feedback={feedback} />
         </Box>
       ) : (
         <Center w="100%">
