@@ -1,9 +1,8 @@
 {
-  "name": "material-kit-react",
-  "author": "Devias IO",
+  "name": "iframe-calendar",
+  "author": "Usman",
   "licence": "MIT",
   "version": "2.0.0",
-  "private": false,
   "scripts": {
     "dev": "next",
     "build": "next build",
