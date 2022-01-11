@@ -1,19 +1,16 @@
-import Head from "next/head";
+import { ChakraProvider } from "@chakra-ui/react";
 import { CacheProvider } from "@emotion/react";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
-import { createEmotionCache } from "../utils/create-emotion-cache";
-import { theme } from "../theme";
-import { SWRConfig } from "swr";
 import axios from "axios";
-import { ChakraProvider } from "@chakra-ui/react";
+import Head from "next/head";
+import { SWRConfig } from "swr";
 import "../style.css";
-axios.defaults.baseURL =
-  process.env.NEXT_APP_SERVER_URL ||
-  process.env.SERVER_URL ||
-  "https://iframe-calendar.herokuapp.com/";
+import { theme } from "../theme";
+import { createEmotionCache } from "../utils/create-emotion-cache";
+axios.defaults.baseURL=process.env.NEXT_APP_SERVER_URL || process.env.SERVER_URL || "https://iframe-calendar.herokuapp.com/"
 const fetcher = async (url) => {
   try {
     const { data } = await axios.get(url);
