@@ -3,7 +3,6 @@ import {
   Button,
   Center,
   Flex,
-  FormControl,
   FormLabel,
   Input,
   Spinner,
@@ -22,7 +21,8 @@ import useGetEvent from "../hooks/useGetEvents";
 import CreateEvent from "./Events/CreateEvent";
 import EventTable from "./Events/EventTable";
 import FilterBox from "./Events/FilterBox";
-import EventList from "./Reminder/EventList";
+import FeedBack from "./Reminder/FeedBack";
+import ReminderList from "./Reminder/ReminderList";
 import TemplateBox from "./Templates/TemplateBox";
 
 const IframeTabs = () => {
@@ -30,6 +30,7 @@ const IframeTabs = () => {
   const toast = useToast();
 
   const [startDate, setStartDate] = useState("");
+  const [feedback, setFeedback] = useState(null);
   const [loadMore, setLoadMore] = useState(false);
   const [viewGrid, setViewGrid] = useState(true);
   const [endDate, setEndDate] = useState("");
@@ -106,13 +107,14 @@ const IframeTabs = () => {
       });
     }
     // eslint-disable-next-line
-  }, [filter]);
+  }, [filter,setFilter]);
 
   return (
-    <Tabs mt="5" isFitted variant="soft-rounded" colorScheme="telegram">
+    <Tabs mt="5" isFitted variant="enclosed-colored" colorScheme="linkedin">
       <TabList>
         <Tab>Events</Tab>
         <Tab>Send Message</Tab>
+        <Tab>Reminder Logs</Tab>
       </TabList>
       <TabPanels>
         <TabPanel>
@@ -120,7 +122,8 @@ const IframeTabs = () => {
             <Input
               mt="8"
               p="3"
-              w="sm"
+              w={isLargerThan460 ? "md" : "sm"}
+              size={isLargerThan460 ? "sm" : "xs"}
               disabled={endDate || startDate || filter}
               type="text"
               placeholder="Search Here...."
@@ -140,83 +143,84 @@ const IframeTabs = () => {
             setStartDate={setStartDate}
           />
           {/* CREATE EVENT */}
-          <Flex w="45%" justifyContent={"center"} alignItems={"center"}>
-            {/* CREATE EVENT */}
+
+          {/* SWITCH VIEW */}
+         <Flex align="center" justify={"end"} my="4" mx="12">
+            <Switch
+              checked={viewGrid}
+              defaultChecked={viewGrid}
+              colorScheme={"teal"}
+              onChange={(e) => setViewGrid(e.target.checked)}
+              id="show-table"
+              size={isLargerThan460 ? "md" : "sm"}
+              mx="1"
+            />
+            <FormLabel
+              color={viewGrid ? "green.600" : "red.600"}
+              fontSize={isLargerThan460 ? "sm" : "xs"}
+              htmlFor="show-list"
+              mb="1"
+            >
+              GRID VIEW
+            </FormLabel>
             <CreateEvent />
-
-            {/* SWITCH VIEW */}
-          <FormControl
-              display="flex"
-              alignItems="center"
-              justifyContent={"center"}
-            >
-              <Switch
-                checked={viewGrid}
-                defaultChecked={viewGrid}
-                colorScheme={"teal"}
-                onChange={(e) => setViewGrid(e.target.checked)}
-                id="show-table"
-                mx="1"
-              />
-              <FormLabel htmlFor="show-list" mb="1">
-                View In Grid
-              </FormLabel>
-            </FormControl>
-            
           </Flex>
-
-          {isValidating ? (
-            // LOADING SPINNER
-            <Center w="100%">
-              <Spinner mx="auto" mt="10" size="xl" />;
-            </Center>
-          ) : !isValidating && data?.items?.length ? (
-            <Box>
-              {viewGrid ? (
-                <>
-                  <EventTable events={data.items} search={search} />
-                  {!search &&
-                    !filter &&
-                    nextToken.length &&
-                    !isValidating &&
-                    data?.items?.length !== data?.totalItems && (
-                      <Center>
-                        <Button
-                          isLoading={loadMore}
-                          my="3"
-                          onClick={handlePaginate}
-                          colorScheme={"telegram"}
-                          size={isLargerThan460 ? "md" : "sm"}
-                        >
-                          Load More
-                        </Button>
-                      </Center>
-                    )}
-                </>
-              ) : (
-                <EventList data={data} mutate={mutate} isValidating={isValidating} />
-              )}
-              {/* EVENT BOX */}
-            </Box>
+          {viewGrid ? (
+            isValidating && !data?.items?.length? (
+              <Center w="100%">
+                <Spinner mx="auto" mt="10" size="xl" />
+              </Center>
+            ) : data?.items?.length ? (
+              <>
+                <EventTable events={data.items} search={search} />
+                {!search &&
+                  !filter &&
+                  nextToken.length &&
+                  !isValidating &&
+                  data?.items?.length !== data?.totalItems && (
+                    <Center>
+                      <Button
+                        isLoading={loadMore}
+                        my="3"
+                        onClick={handlePaginate}
+                        colorScheme={"telegram"}
+                        size={isLargerThan460 ? "md" : "sm"}
+                      >
+                        Load More
+                      </Button>
+                    </Center>
+                  )}
+              </>
+            ) : (
+              <Box
+                mx="auto"
+                fontWeight={"semibold"}
+                textAlign={"center"}
+                my="10"
+                fontSize={"3xl"}
+              >
+                NO EVENTS AVAILABLE
+              </Box>
+            )
           ) : (
-            <Box
-              mx="auto"
-              fontWeight={"semibold"}
-              textAlign={"center"}
-              my="10"
-              fontSize={"3xl"}
-            >
-              NO EVENTS AVAILABLE
-            </Box>
+            <ReminderList
+              data={data}
+              setFeedback={setFeedback}
+            
+              mutate={mutate}
+              isValidating={isValidating}
+            />
           )}
-          {/* EVENT BOX END */}
           {/* ------------------------------- */}
         </TabPanel>
         <TabPanel>
           {/* CREATE TEMPLATE */}
           <TemplateBox />
         </TabPanel>
-       
+         <TabPanel>
+          {/* REMINDER LOGS*/}
+          <FeedBack feedback={feedback} />
+        </TabPanel>
       </TabPanels>
     </Tabs>
   );

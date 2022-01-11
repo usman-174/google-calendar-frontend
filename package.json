@@ -5,6 +5,7 @@
   "dependencies": {
     "@chakra-ui/icons": "^1.1.1",
     "@chakra-ui/react": "^1.7.3",
+    "@createnl/grouped-checkboxes": "^1.2.0",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@material-ui/data-grid": "^4.0.0-alpha.37",

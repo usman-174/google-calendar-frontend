@@ -7,7 +7,7 @@ import {
   useMediaQuery,
   useToast,
   Wrap,
-  WrapItem,
+  WrapItem
 } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import ShowMoreText from "react-show-more-text";
@@ -63,6 +63,8 @@ const EventTable = ({ events, search }) => {
                     : "80vw"
                 }
               >
+                 <Tooltip hasArrow label='Delete Event'>
+
                 <DeleteIcon
                   color="red.400"
                   onClick={() => setIsOpen(true)}
@@ -71,7 +73,8 @@ const EventTable = ({ events, search }) => {
                   h="20px"
                   w="20px"
                   cursor={"pointer"}
-                />
+                  />
+                  </Tooltip>
                 <DeleteEventAlter
                   onClose={onClose}
                   isOpen={isOpen}
