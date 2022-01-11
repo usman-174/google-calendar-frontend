@@ -10,7 +10,7 @@ import  { SWRConfig } from 'swr'
 import axios from "axios";
 import { ChakraProvider } from '@chakra-ui/react'
 import "../style.css"
-axios.defaults.baseURL="https://iframe-calendar.herokuapp.com/" || process.env.NEXT_APP_SERVER_URL || process.env.SERVER_URL||
+axios.defaults.baseURL=process.env.NEXT_APP_SERVER_URL || process.env.SERVER_URL || "https://iframe-calendar.herokuapp.com/"
 const fetcher = async (url) => {
   try {
     const { data } = await axios.get(url)
