@@ -6,7 +6,7 @@ import {
   SvgIcon,
   TextField
 } from "@mui/material";
-import { Search as SearchIcon } from "../../icons/search";
+import SearchIcon from '@mui/icons-material/Search';
 
 export const ReminderToolbar = ({
   searchQ,
