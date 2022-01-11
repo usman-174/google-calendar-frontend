@@ -1,51 +1,45 @@
 {
-  "name": "google-calendar-frontend",
-  "version": "0.1.0",
-  "private": true,
+  "name": "material-kit-react",
+  "author": "Devias IO",
+  "licence": "MIT",
+  "version": "2.0.0",
+  "private": false,
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "export": "next export",
+    "lint": "next lint",
+    "lint-fix": "next lint --fix"
+  },
   "dependencies": {
-    "@chakra-ui/icons": "^1.1.1",
-    "@chakra-ui/react": "^1.7.3",
-    "@createnl/grouped-checkboxes": "^1.2.0",
+    "@chakra-ui/react": "^1.7.4",
+    "@emotion/cache": "^11.5.0",
     "@emotion/react": "^11.7.1",
+    "@emotion/server": "^11.4.0",
     "@emotion/styled": "^11.6.0",
-    "@material-ui/data-grid": "^4.0.0-alpha.37",
-    "@testing-library/jest-dom": "^5.16.1",
-    "@testing-library/react": "^12.1.2",
-    "@testing-library/user-event": "^13.5.0",
+    "@mui/icons-material": "^5.2.5",
+    "@mui/lab": "^5.0.0-alpha.53",
+    "@mui/material": "^5.0.6",
+    "@mui/styles": "^5.0.2",
     "axios": "^0.24.0",
-    "framer-motion": "^4.1.17",
+    "formik": "^2.2.9",
+    "framer-motion": "^5.5.7",
+    "material-react-toastify": "^1.0.1",
+    "next": "^12.0.3-canary.7",
+    "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-highlight-words": "^0.17.0",
     "react-phone-input-2": "^2.14.0",
-    "react-router-dom": "^6.2.1",
-    "react-scripts": "5.0.0",
     "react-show-more-text": "^1.5.2",
-    "swr": "^1.1.1",
-    "web-vitals": "^2.1.2"
+    "react-tabs": "^3.2.3",
+    "swr": "^1.1.2",
+    "yup": "^0.32.11",
+    "zustand": "^3.6.8"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-next": "12.0.3-canary.7"
   }
 }

@@ -1,8 +1,6 @@
-import { useMediaQuery } from '@chakra-ui/react';
 import React from 'react';
 
 const Calendar = () => {
-    const [isLargerThan510] = useMediaQuery("(min-width: 510px)");
   
     return (
       <>
@@ -13,8 +11,8 @@ const Calendar = () => {
           border: "solid 2px #307",
           margin: "0 auto",
           marginTop:"15px",
-          width: isLargerThan510 ? "62vw" : "90vw",
-          height: isLargerThan510 ? "24vw" : "45vw",
+          width:  "100%",
+          height:  "50vw",
         }}
         frameBorder="0"
         title='Calendar'

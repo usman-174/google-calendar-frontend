@@ -1,6 +1,6 @@
 import useSWR from "swr";
 
-function useGetEvent(startTime, endTime, filter,searchQuery) {
+function useGetEvent(startTime, endTime, filter) {
   let query = "/events/all";
  
   if (endTime && filter === true) {
@@ -8,10 +8,6 @@ function useGetEvent(startTime, endTime, filter,searchQuery) {
   }
   if(startTime && endTime && filter === true){
     query = `/events/all?startTime=${startTime}&endTime=${endTime}`;
-
-  }
-  if(searchQuery?.length >= 3  && !filter){
-    query = `/events/all?query=${searchQuery}`;
   }
  
   const { data, isValidating,error, mutate,...rest } = useSWR(query);
