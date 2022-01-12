@@ -5,8 +5,8 @@ import { toast, ToastContainer } from "material-react-toastify";
 import "material-react-toastify/dist/ReactToastify.css";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import CreateEvent from "src/components/events/CreateEvent";
-import useGetEvent from "src/hooks/useGetEvents";
+import useGetEvent from "../hooks/useGetEvents";
+import CreateEvent from "../components/events/CreateEvent"
 import { DashboardLayout } from "../components/dashboard-layout";
 import { EventCard } from "../components/events/EventCard";
 import { EventListToolbar } from "../components/events/EventListToolbar";

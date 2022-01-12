@@ -11,8 +11,7 @@ import {
 } from "@mui/material";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
-import { useStore } from "src/store/store";
-
+import {useStore }from "../../store/store"
 export const ReminderFeedBack = () => {
   const feedback = useStore((state) => state.feedback);
 

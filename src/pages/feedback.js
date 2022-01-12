@@ -1,7 +1,7 @@
 import { Box, Container,  Typography,Link } from "@mui/material";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useStore } from "src/store/store";
+import { useStore } from "../store/store";
 import { DashboardLayout } from "../components/dashboard-layout";
 import { ReminderFeedBack } from "../components/feedback/ReminderFeedBack";
 

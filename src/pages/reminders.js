@@ -9,7 +9,7 @@ import { ToastContainer, toast } from "material-react-toastify";
 import "material-react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useRouter } from 'next/router'
-import { useStore } from "src/store/store";
+import { useStore } from "../store/store";
 
 const Customers = () => {
   const router= useRouter()
