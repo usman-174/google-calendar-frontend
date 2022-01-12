@@ -11,11 +11,12 @@ import "../style.css";
 import { theme } from "../theme";
 import { createEmotionCache } from "../utils/create-emotion-cache";
 if (
-  console.log(process.env.NEXT_APP_NODE_ENV)
-  console.log(process.env.NODE_ENV)
+
   process.env.NEXT_APP_NODE_ENV !== "production" ||
   process.env.NODE_ENV !== "production"
 ) {
+    console.log(process.env.NEXT_APP_NODE_ENV)
+  console.log(process.env.NODE_ENV)
   axios.defaults.baseURL = "https://iframe-calendar.herokuapp.com/";
 } else {
   console.log(process.env.NEXT_APP_NODE_ENV)
