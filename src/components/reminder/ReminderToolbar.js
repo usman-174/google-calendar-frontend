@@ -18,24 +18,7 @@ export const ReminderToolbar = ({
 }) => {
   return (
     <Box>
-      {/* <Box
-        sx={{
-          alignItems: "center",
-          display: "flex",
-          justifyContent: "flex-end",
-          flexWrap: "wrap",
-          m: -1,
-        }}
-      >
-        <Typography sx={{ m: 1 }} variant="h4">
-          Events List
-        </Typography>
-        <Box sx={{ m: 1 }}>
-          <LoadingButton color="primary" loading={feedbackLoading} disabled={!selectedItems?.length} onClick={handlesendreminders} variant="contained">
-            Send Reminders
-          </LoadingButton>
-        </Box>
-      </Box> */}
+     
       <Box sx={{ mt: 3 }}>
         <Card>
           <CardContent>

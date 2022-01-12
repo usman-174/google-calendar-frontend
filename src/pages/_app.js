@@ -10,7 +10,18 @@ import { SWRConfig } from "swr";
 import "../style.css";
 import { theme } from "../theme";
 import { createEmotionCache } from "../utils/create-emotion-cache";
-axios.defaults.baseURL=process.env.NEXT_APP_SERVER_URL || process.env.SERVER_URL || "https://iframe-calendar.herokuapp.com/"
+if (
+  process.env.NEXT_APP_NODE_ENV !== "production" ||
+  process.env.NODE_ENV !== "production"
+) {
+  axios.defaults.baseURL = "http://localhost:5000";
+} else {
+  axios.defaults.baseURL =
+  process.env.NEXT_APP_SERVER_URL ||
+  process.env.SERVER_URL ||
+  "https://iframe-calendar.herokuapp.com/";
+}
+
 const fetcher = async (url) => {
   try {
     const { data } = await axios.get(url);

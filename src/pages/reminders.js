@@ -15,22 +15,11 @@ const Customers = () => {
   const router= useRouter()
   const [selectedItems, setSelectedItems] = useState([]);
   const [searchQ, setSearchQ] = useState("");
-  const feedback = useStore(state=>state.feedback)
   const setFeedback = useStore(state=>state.setFeedback)
   const [feedbackLoading, setFeedbackLoading] = useState(false);
   const { data, isValidating, mutate } = useSWR("/events");
   const rows = data
     ?.filter((item) => !item.description.includes("#reminder_sent"))
-    .filter((evnt) => {
-      if (searchQ.length) {
-        return (
-          evnt.keywords.toLowerCase().includes(searchQ.trim()) ||
-          evnt.description.toLowerCase().includes(searchQ.trim()) ||
-          evnt.phone.toLowerCase().includes(searchQ.trim())
-        );
-      }
-      return evnt;
-    })
     .map((event) => ({
       id: event?.id,
       phone: event?.summary,
@@ -38,7 +27,16 @@ const Customers = () => {
       keywords: event?.description.split(" || ")[1].replace(" ", " , ").toUpperCase(),
       description: event?.description,
       ...event,
-    }))
+    })).filter((evnt) => {
+      if (searchQ.length) {
+        return (
+          evnt?.keywords.toLowerCase().includes(searchQ.trim()) ||
+          evnt?.description.toLowerCase().includes(searchQ.trim()) ||
+          evnt?.phone.toLowerCase().includes(searchQ.trim())
+        );
+      }
+      return evnt;
+    })
 
   const onCheckBoxChange = (e) => {
     if (e.target.value === "all" && e.target.checked) {

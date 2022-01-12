@@ -9,9 +9,8 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Typography,
+  Typography
 } from "@mui/material";
-import PropTypes from "prop-types";
 import { useState } from "react";
 import ShowMoreText from "react-show-more-text";
 
@@ -73,7 +72,9 @@ const ReminderList = ({ events, onCheckBoxChange, selectedItems, ...rest }) => {
                       </Typography>
                     </TableCell>
                     <TableCell>{row.phone}</TableCell>
-                    <TableCell sx={{ minWidth: { xs: "40vw", sm: "20vw", md: "14vw" } }}>
+                    <TableCell sx={{ minWidth: { xs: "40vw", sm: "20vw", md: "14vw" },maxWidth:{
+                      md:"25vw"
+                    } }}>
                       <ShowMoreText
                         lines={3}
                         more="Read more"
@@ -113,7 +114,7 @@ const ReminderList = ({ events, onCheckBoxChange, selectedItems, ...rest }) => {
 };
 
 ReminderList.propTypes = {
-  events: PropTypes.array.isRequired,
+  // events: PropTypes.array.isRequired.,
 };
 
 export default ReminderList;

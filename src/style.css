@@ -1,0 +1,13 @@
+.show_more{
+    font-size: small;
+    color: rgb(56, 168, 219);
+}
+.show_more:hover{
+    text-decoration: underline;
+    color: rgb(6, 120, 173);
+
+
+}
+.content-css{
+    font-size: small;
+}
