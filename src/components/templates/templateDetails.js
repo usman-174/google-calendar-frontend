@@ -1,26 +1,20 @@
-import { useEffect, useState } from "react";
-import useSWR from "swr";
 import {
   Box,
   Button,
   Card,
   CardContent,
   CardHeader,
-  Divider,
-  Grid,
-  InputLabel,TextField,
-  MenuItem,
-  Select,FormControl,
+  Divider, FormControl, Grid,
+  InputLabel, MenuItem,
+  Select, TextField
 } from "@mui/material";
-import { toast, ToastContainer } from "material-react-toastify";
-
-import "material-react-toastify/dist/ReactToastify.css";
-
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import DeleteAlert from "./DeleteAlert";
 import axios from "axios";
-import CreateTemplate from "./AddTemplate";
-import EditTemplate from "./EditTemplate";
+import { toast, ToastContainer } from "material-react-toastify";
+import "material-react-toastify/dist/ReactToastify.css";
+import { useEffect, useState } from "react";
+import useSWR from "swr";
+
+
 
 export const TemplateDetails = (props) => {
   const { data: templatesList, isValidating, error, mutate } = useSWR("/templates/all");
@@ -144,7 +138,7 @@ export const TemplateDetails = (props) => {
         <CardHeader subheader="Select Templated to send Messages" title="Template Messages" />
         {template && (
           <Box sx={{ mx: "auto", textAlign: "center" }}>
-            <DeleteForeverIcon
+            {/* <DeleteForeverIcon
               onClick={handleClickOpen}
               fontSize="large"
               color="error"
@@ -158,10 +152,10 @@ export const TemplateDetails = (props) => {
               templatesList={templatesList}
               isValidating={isValidating}
               mutate={mutate}
-            />
+            /> */}
           </Box>
         )}
-        <DeleteAlert HandleDelete={HandleDelete} open={open} handleClose={handleClose} />
+        {/* <DeleteAlert HandleDelete={HandleDelete} open={open} handleClose={handleClose} /> */}
         <Divider />
         <CardContent>
           <Grid container sx={{ textAlign: "center" }} justifyContent={"center"} spacing={5}>
@@ -237,11 +231,11 @@ export const TemplateDetails = (props) => {
             p: 2,
           }}
         >
-          <CreateTemplate
+          {/* <CreateTemplate
             templatesList={templatesList}
             isValidating={isValidating}
             mutate={mutate}
-          />
+          /> */}
           <Button
             disabled={!phone || !template || !message}
             color="primary"

@@ -119,6 +119,10 @@ const Events = () => {
             setEndDate={setEndDate}
             endDate={endDate}
           />
+            <CreateEvent
+             isValidating={isValidating}
+             data={data}
+             mutate={mutate}/>
           {isValidating && !data?.items ? (
             <Box
               sx={{
@@ -133,10 +137,7 @@ const Events = () => {
             </Box>
           ) : data?.items?.length ? (
             <>
-             <CreateEvent
-             isValidating={isValidating}
-             data={data}
-             mutate={mutate}/>
+           
               <Box sx={{ pt: 3 }}>
                 <Grid container spacing={3}>
                   {searchQ.length > 2

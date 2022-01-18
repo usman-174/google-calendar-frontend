@@ -28,10 +28,10 @@ export const ReminderFeedBack = () => {
           <Tabs>
             <TabList style={{margin:"0 auto",textAlign:"center"}}>
               <Tab><Typography variant="h5" style={{color:"#178c55"}} sx={{px:2, color:"secondary.dark"}}>
-                        Sent
+                        Sent {" "}{feedback?.success?.length || null}
                       </Typography></Tab>
               <Tab><Typography variant="h5" style={{color:"#453FC3"}}sx={{px:2}}>
-                        Failed
+                        Failed {" "}{feedback?.failed?.length || null}
                       </Typography></Tab>
             </TabList>
 

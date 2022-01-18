@@ -46,7 +46,6 @@ export const EventCard = ({ searchQ,mutate, event, ...rest }) => {
         return;
       }
     } catch (error) {
-      alert(error.message)
       toast.error(error?.response?.data?.error || "Failed to delete the Event", {
         position: "top-center",
         autoClose: 2200,

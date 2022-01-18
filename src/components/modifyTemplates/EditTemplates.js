@@ -1,5 +1,3 @@
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
 import { Chip, Grid, Paper, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -15,8 +13,7 @@ export default function EditTemplate({
   templatesList,
   templateId,
   Template,
-  Message,
-  List,
+  List,Message
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState(Template);
@@ -73,11 +70,12 @@ export default function EditTemplate({
           draggable: true,
           progress: undefined,
         });
-        mutate();
         setIsOpen(false);
+        mutate();
         return;
       }
     } catch (error) {
+        console.log(error);
       toast.error(error?.response?.data?.error || "Error Try later again.", {
         position: "top-right",
         autoClose: 2000,
@@ -91,7 +89,6 @@ export default function EditTemplate({
   };
 
   const AddtoList = () => {
-    
     setList([...list, tag.replace(" ", "_")]);
     setTag("");
   };
@@ -104,12 +101,8 @@ export default function EditTemplate({
   }, [setIsOpen, isOpen]);
   return (
     <>
-      <EditIcon
-        fontSize="large"
-        onClick={() => setIsOpen(true)}
-        color="info"
-        sx={{ cursor: "pointer", mx: 1 }}
-      />
+      <Button variant="contained"  onClick={() => setIsOpen(true)}color="info" 
+      loading={isValidating?"true":"false"}>Edit</Button>
 
       <Drawer anchor={"right"} open={isOpen} onClose={() => setIsOpen(false)}>
         <ToastContainer />
@@ -121,8 +114,8 @@ export default function EditTemplate({
           </Typography>
         </Box>
         <Box sx={{ px: 4, maxWidth: { sm: "40vw" } }}>
-          <Grid sx={{ my: 4 }} justifyContent={"center"} spacing={4}>
-            <Grid xs={12}>
+          <Grid sx={{ my: 4 }} justifyContent={"center"} >
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label="Title"
@@ -182,8 +175,9 @@ export default function EditTemplate({
           >
             {list.map((tagx) => (
               <Chip
+              key={tagx}
                 sx={{ m: 0.4 }}
-                icon={DeleteIcon}
+                // label="Deletable"
                 label={tagx}
                 color="info"
                 onDelete={() => {

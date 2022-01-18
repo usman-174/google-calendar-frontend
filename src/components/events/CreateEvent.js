@@ -214,12 +214,15 @@ const CreateEvent = ({ isValidating, data, mutate }) => {
                     </MenuItem>
                   ))}
                 </Select>
+                {!templatesList?.length ? <Typography variant="caption" color="error" display="block" gutterBottom>
+        Please create a template before creating an event
+      </Typography>:null}
               </FormControl>
             </Grid>
             {keywords ? (
               <Grid item xs={12}>
                 {keywords.map((word) => (
-                  <SeverityPill sx={{ mx: 0.7, my: 1, p: 0.7 }}>{word}</SeverityPill>
+                  <SeverityPill key={word} sx={{ mx: 0.7, my: 1, p: 0.7 }}>{word}</SeverityPill>
                 ))}
               </Grid>
             ) : null}
@@ -248,7 +251,7 @@ const CreateEvent = ({ isValidating, data, mutate }) => {
               Cancel
             </Button>
             <Button
-              disabled={isValidating}
+              disabled={isValidating || !templatesList?.length}
               color="primary"
               onClick={handleSubmit}
               sx={{ mx: 2 }}

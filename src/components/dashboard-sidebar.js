@@ -1,15 +1,15 @@
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import ClosedCaptionOffIcon from '@mui/icons-material/ClosedCaptionOff';
+import EventNoteSharpIcon from '@mui/icons-material/EventNoteSharp';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 import StarsIcon from '@mui/icons-material/Stars';
 import TextsmsIcon from '@mui/icons-material/Textsms';
 import { Box, Divider, Drawer, Typography, useMediaQuery } from "@mui/material";
 import NextLink from "next/link";
-import EventNoteSharpIcon from '@mui/icons-material/EventNoteSharp';
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import { useEffect } from "react";
-import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
 const items = [
   {
@@ -37,11 +37,11 @@ const items = [
     icon: <ClosedCaptionOffIcon fontSize="small" />,
     title: "Templates",
   },
-  // {
-  //   href: "/register",
-  //   icon: <UserAddIcon fontSize="small" />,
-  //   title: "Register",
-  // },
+  {
+    href: "/modify_templates",
+    icon: <AppRegistrationIcon fontSize="small" />,
+    title: "Modify Templates",
+  },
   // {
   //   href: "/404",
   //   icon: <XCircleIcon fontSize="small" />,
