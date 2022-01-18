@@ -38,15 +38,11 @@ const items = [
     title: "Templates",
   },
   {
-    href: "/modify_templates",
+    href: "/modifyTemplates",
     icon: <AppRegistrationIcon fontSize="small" />,
-    title: "Modify Templates",
+    title: "ModifyTemplates",
   },
-  // {
-  //   href: "/404",
-  //   icon: <XCircleIcon fontSize="small" />,
-  //   title: "Error",
-  // },
+  
 ];
 
 export const DashboardSidebar = (props) => {
