@@ -7,7 +7,7 @@ import { toast, ToastContainer } from "material-react-toastify";
 import "material-react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 
-export default function EditTemplate({
+export default function EditTemplates({
   mutate,
   isValidating,
   templatesList,

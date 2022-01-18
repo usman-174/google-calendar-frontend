@@ -17,7 +17,7 @@ import { DashboardLayout } from "../components/dashboard-layout";
 
 import { toast, ToastContainer } from "material-react-toastify";
 import "material-react-toastify/dist/ReactToastify.css";
-import EditTemplate from "../components/modifyTemplates/EditTemplates";
+import EditTemplates from "../components/modifyTemplates/EditTemplates";
 import CreateTemplate from "../components/templates/AddTemplate";
 
 const modify_templates = () => {
@@ -139,7 +139,7 @@ const modify_templates = () => {
                           >
                             Delete
                           </Button>
-                          <EditTemplate
+                          <EditTemplates
                             isValidating={isValidating}
                             templateId={temp.id}
                             templatesList={templatesList}
