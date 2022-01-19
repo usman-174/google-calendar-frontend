@@ -37,11 +37,11 @@ const items = [
     icon: <ClosedCaptionOffIcon fontSize="small" />,
     title: "Templates",
   },
-  // {
-  //   href: "/modifyTemplates",
-  //   icon: <AppRegistrationIcon fontSize="small" />,
-  //   title: "ModifyTemplates",
-  // },
+  {
+    href: "/modifyTemplates",
+    icon: <AppRegistrationIcon fontSize="small" />,
+    title: "ModifyTemplates",
+  },
   
 ];
 
